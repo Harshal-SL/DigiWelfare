@@ -16,6 +16,17 @@ interface AcknowledgmentReceiptProps {
     applicantPhone: string;
     applicantAddress: string;
     status: string;
+    paymentStatus?: string;
+    paymentMethod?: string;
+    amountPaid?: number;
+    paymentDate?: string;
+    transactionId?: string;
+    applicationFee?: number;
+    convenienceFee?: number;
+    taxAmount?: number;
+    totalAmount?: number;
+    applicationBlockchainHash?: string;
+    paymentBlockchainHash?: string;
   };
 }
 
@@ -91,6 +102,52 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
               </div>
             </div>
 
+            {applicationData.paymentStatus === 'completed' && (
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <h3 className="font-semibold mb-2">Payment Details</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-semibold">Transaction ID:</p>
+                      <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded break-all">
+                        {applicationData.transactionId}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-semibold">Payment Date:</p>
+                      <p>{new Date(applicationData.paymentDate || '').toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold">Payment Method:</p>
+                      <p className="capitalize">{applicationData.paymentMethod}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold">Amount Paid:</p>
+                      <p className="text-green-600 font-semibold">₹{applicationData.amountPaid}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 space-y-4">
+                    {applicationData.applicationBlockchainHash && (
+                      <div>
+                        <p className="font-semibold">Application Blockchain Hash:</p>
+                        <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded text-xs break-all">
+                          {applicationData.applicationBlockchainHash}
+                        </p>
+                      </div>
+                    )}
+                    {applicationData.paymentBlockchainHash && (
+                      <div>
+                        <p className="font-semibold">Payment Blockchain Hash:</p>
+                        <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded text-xs break-all">
+                          {applicationData.paymentBlockchainHash}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="border-t border-gray-200 pt-4 mt-4">
               <h3 className="font-semibold mb-2">Applicant Details</h3>
               <div className="space-y-2 text-sm">
@@ -98,6 +155,30 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
                 <p><span className="font-semibold">Email:</span> {applicationData.applicantEmail}</p>
                 <p><span className="font-semibold">Phone:</span> {applicationData.applicantPhone}</p>
                 <p><span className="font-semibold">Address:</span> {applicationData.applicantAddress}</p>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 pt-4 mt-4">
+              <h3 className="font-semibold mb-2">Fee Details</h3>
+              <div className="space-y-2 text-sm">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="font-semibold">Application Fee:</p>
+                    <p>₹{applicationData.applicationFee?.toFixed(2) || '500.00'}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Convenience Fee:</p>
+                    <p>₹{applicationData.convenienceFee?.toFixed(2) || '12.50'}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Tax:</p>
+                    <p>₹{applicationData.taxAmount?.toFixed(2) || '2.80'}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Total Amount:</p>
+                    <p className="text-green-600 font-semibold">₹{applicationData.totalAmount?.toFixed(2) || '515.30'}</p>
+                  </div>
+                </div>
               </div>
             </div>
 

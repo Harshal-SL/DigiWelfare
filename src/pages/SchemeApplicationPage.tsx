@@ -13,6 +13,27 @@ import OTPVerification from "@/components/OTPVerification";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import AcknowledgmentReceipt from "@/components/AcknowledgmentReceipt";
 import { blockchainService } from "@/services/blockchainService";
+import { ApplicationStatusBar } from '@/components/ApplicationStatusBar';
+
+// Define interfaces for better type safety
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  address?: string;
+}
+
+interface Application {
+  id: string;
+  schemeId: string;
+  userId: string;
+  userName: string;
+  status: "pending" | "approved" | "rejected";
+  submittedAt: string;
+  documents: string[];
+  additionalInfo: string;
+  eligibilityScore: number;
+}
 
 const SchemeApplicationPage = () => {
   const { schemeId } = useParams<{ schemeId: string }>();
@@ -54,37 +75,35 @@ const SchemeApplicationPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
-    if (!phoneNumber) {
-      toast.error("Please enter your phone number");
-      return;
-    }
-    
-    if (!email) {
-      toast.error("Please enter your email");
-      return;
-    }
-    
-    if (!isEmailVerified) {
-      toast.error("Please verify your email");
-      return;
-    }
-    
-    if (!isPhoneVerified) {
-      toast.error("Please verify your phone number");
-      return;
-    }
-    
-    if (documents.length === 0) {
-      toast.error("Please upload the required documents");
-      return;
-    }
-
-    setIsLoading(true);
-
     try {
+      // Validate required fields
+      if (!phoneNumber) {
+        toast.error("Please enter your phone number");
+        return;
+      }
+      
+      if (!email) {
+        toast.error("Please enter your email");
+        return;
+      }
+      
+      if (!isEmailVerified) {
+        toast.error("Please verify your email");
+        return;
+      }
+      
+      if (!isPhoneVerified) {
+        toast.error("Please verify your phone number");
+        return;
+      }
+      
+      if (documents.length === 0) {
+        toast.error("Please upload the required documents");
+        return;
+      }
+
       // Generate application number
-      const applicationNumber = `app-${Date.now()}`;
+      const applicationNumber = `DW${Date.now()}${Math.floor(Math.random() * 1000)}`;
       
       // Create submission data
       const submissionData = {
@@ -105,19 +124,16 @@ const SchemeApplicationPage = () => {
       };
 
       // Create application object for local state
-      const newApplication = {
+      const newApplication: Application = {
         id: applicationNumber,
         schemeId: scheme?.id || "",
         userId: user?.id || "",
         userName: user?.name || "",
         status: "pending",
         submittedAt: new Date().toISOString(),
-        documents: documents.map(doc => ({
-          name: doc.name,
-          url: URL.createObjectURL(doc)
-        })),
+        documents: documents.map(doc => doc.name), // Store only document names
         additionalInfo: additionalInfo,
-        eligibilityScore: Math.floor(Math.random() * 100) // Simulated eligibility score
+        eligibilityScore: Math.floor(Math.random() * 100)
       };
 
       // Log to blockchain
@@ -139,21 +155,21 @@ const SchemeApplicationPage = () => {
       // Add application to applications array
       applications.push(newApplication);
 
-      // Save application data and show acknowledgment
-      setApplicationData(submissionData);
-      setShowAcknowledgment(true);
-      toast.success("Application submitted and logged to blockchain successfully!");
+      // Show success message
+      toast.success("Application submitted successfully!");
 
-      // Redirect to dashboard after 3 seconds
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 3000);
+      // Navigate directly to payment page without showing acknowledgment
+      navigate('/payment', {
+        state: { 
+          applicationData: submissionData,
+          applicationNumber: applicationNumber,
+          blockchainHash: blockchainResult.hash
+        }
+      });
 
     } catch (error) {
       console.error("Error submitting application:", error);
       toast.error("Failed to submit application. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -162,8 +178,11 @@ const SchemeApplicationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="container mx-auto py-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Add status bar at the top */}
+        <ApplicationStatusBar currentStep="application" />
+        
         <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 border-0">
           <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
             <div className="flex items-center gap-3 mb-3">
@@ -347,7 +366,10 @@ const SchemeApplicationPage = () => {
                             type="button"
                             variant="outline"
                             size="icon"
-                            onClick={() => document.querySelector('input[type="file"]')?.click()}
+                            onClick={() => {
+                              const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+                              if (fileInput) fileInput.click();
+                            }}
                             className="hover:bg-blue-50 border-blue-200 text-blue-600"
                           >
                             <Upload className="h-4 w-4" />

@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { toast } from 'sonner';
+import { ethers } from 'ethers';
 
 // Use local blockchain
 const LOCAL_RPC_URL = 'http://localhost:8545';
@@ -98,6 +99,22 @@ const CONTRACT_ABI = [
     "type": "function"
   }
 ];
+
+interface BlockchainResult {
+  success: boolean;
+  hash?: string;
+  error?: string;
+}
+
+interface PaymentData {
+  type: string;
+  applicationId: string;
+  transactionId: string;
+  amount: number;
+  paymentMethod: string;
+  timestamp: string;
+  status: string;
+}
 
 class BlockchainService {
   private web3: Web3;
@@ -199,37 +216,41 @@ class BlockchainService {
     }
   }
 
-  async logApplication(applicationData: {
-    applicationId: string;
-    schemeName: string;
-    applicantName: string;
-    applicantEmail: string;
-    documents: File[];
-    status: string;
-  }) {
+  async logApplication(data: any): Promise<BlockchainResult> {
     try {
-      console.log('Original application data:', applicationData);
+      console.log('Original application data:', data);
       
-      // Hash the application data
-      const hashedData = await this.hashData(applicationData);
+      // Hash the data using web3
+      const hashedData = await this.hashData(data);
       console.log('Hashed application data:', hashedData);
       
-      // In development mode, just log to console
-      if (import.meta.env.DEV) {
+      // In development mode, simulate blockchain storage
+      if (process.env.NODE_ENV === 'development') {
         console.log('Development mode: Application data would be stored in blockchain');
         console.log('Blockchain transaction would include:');
-        console.log('- Original data:', applicationData);
+        console.log('- Original data:', data);
         console.log('- Hashed data:', hashedData);
         console.log('- Block number: (simulated)');
         console.log('- Transaction hash: (simulated)');
-        return true;
+        
+        return {
+          success: true,
+          hash: hashedData
+        };
       }
-
-      // Production blockchain logging would go here
-      return true;
-    } catch (error: any) {
-      console.error('Error in application logging:', error);
-      return false;
+      
+      // In production, this would interact with a real blockchain
+      // For now, return the hashed data
+      return {
+        success: true,
+        hash: hashedData
+      };
+    } catch (error) {
+      console.error('Error logging to blockchain:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
   }
 
@@ -245,6 +266,44 @@ class BlockchainService {
         applicationId
       });
       return null;
+    }
+  }
+
+  async logPayment(data: PaymentData): Promise<BlockchainResult> {
+    try {
+      console.log('Original payment data:', data);
+      
+      // Hash the payment data using web3
+      const hashedData = await this.hashData(data);
+      console.log('Hashed payment data:', hashedData);
+      
+      // In development mode, simulate blockchain storage
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Development mode: Payment data would be stored in blockchain');
+        console.log('Blockchain transaction would include:');
+        console.log('- Original data:', data);
+        console.log('- Hashed data:', hashedData);
+        console.log('- Block number: (simulated)');
+        console.log('- Transaction hash: (simulated)');
+        
+        return {
+          success: true,
+          hash: hashedData
+        };
+      }
+      
+      // In production, this would interact with a real blockchain
+      // For now, return the hashed data
+      return {
+        success: true,
+        hash: hashedData
+      };
+    } catch (error) {
+      console.error('Error logging payment to blockchain:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
   }
 }
