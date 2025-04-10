@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import { blockchainService } from "@/services/blockchainService";
 
 const LoginPage = () => {
   const [userId, setUserId] = useState("");
@@ -20,20 +21,127 @@ const LoginPage = () => {
 
   const handleUserLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await login(userId, userPassword);
-    if (success) {
-      toast.success("Login successful!");
-      navigate("/dashboard");
+    try {
+      const success = await login(userId, userPassword);
+      if (success) {
+        // Log login activity to blockchain
+        const loginData = {
+          userId: userId,
+          email: userId, // Using userId as email for user login
+          timestamp: new Date().toISOString(),
+          ipAddress: await getIPAddress(),
+          deviceInfo: getDeviceInfo(),
+          userType: 'user' as const
+        };
+
+        await blockchainService.logLogin(loginData);
+        
+        toast.success("Login successful!");
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.message || 'Login failed. Please try again.');
     }
   };
 
   const handleAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await adminLogin(adminEmail, adminPassword);
-    if (success) {
-      toast.success("Login successful!");
-      navigate("/admin");
+    try {
+      const success = await adminLogin(adminEmail, adminPassword);
+      if (success) {
+        // Log login activity to blockchain
+        const loginData = {
+          userId: 'admin_' + adminEmail.split('@')[0], // Create admin userId
+          email: adminEmail,
+          timestamp: new Date().toISOString(),
+          ipAddress: await getIPAddress(),
+          deviceInfo: getDeviceInfo(),
+          userType: 'admin' as const
+        };
+
+        await blockchainService.logLogin(loginData);
+        
+        toast.success("Login successful!");
+        navigate("/admin");
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.message || 'Login failed. Please try again.');
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Login failed');
+      }
+
+      const data = await response.json();
+      
+      // Log login activity to blockchain
+      const loginData = {
+        userId: data.user.id,
+        email: data.user.email,
+        timestamp: new Date().toISOString(),
+        ipAddress: await getIPAddress(),
+        deviceInfo: getDeviceInfo()
+      };
+
+      await blockchainService.logLogin(loginData);
+
+      // Store user data and token
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
+      
+      // Update auth context
+      setUser(data.user);
+      setIsAuthenticated(true);
+      
+      toast.success('Login successful');
+      navigate('/dashboard');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      toast.error(error.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Helper function to get IP address
+  const getIPAddress = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    } catch (error) {
+      console.error('Error fetching IP address:', error);
+      return 'unknown';
+    }
+  };
+
+  // Helper function to get device info
+  const getDeviceInfo = () => {
+    const userAgent = navigator.userAgent;
+    const platform = navigator.platform;
+    const screenResolution = `${window.screen.width}x${window.screen.height}`;
+    return JSON.stringify({
+      userAgent,
+      platform,
+      screenResolution
+    });
   };
 
   return (

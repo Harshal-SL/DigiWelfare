@@ -12,6 +12,7 @@ import { schemes } from "@/data/mockData";
 import OTPVerification from "@/components/OTPVerification";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import AcknowledgmentReceipt from "@/components/AcknowledgmentReceipt";
+import { blockchainService } from "@/services/blockchainService";
 
 const SchemeApplicationPage = () => {
   const { schemeId } = useParams<{ schemeId: string }>();
@@ -82,10 +83,10 @@ const SchemeApplicationPage = () => {
     setIsLoading(true);
 
     try {
-      // Simulate API call to submit application
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Generate application number
       const applicationNumber = `DW${Date.now()}${Math.floor(Math.random() * 1000)}`;
+      
+      // Create submission data
       const submissionData = {
         applicationNumber,
         schemeName: scheme?.title || "",
@@ -103,10 +104,26 @@ const SchemeApplicationPage = () => {
         status: 'Submitted'
       };
 
+      // Log to blockchain
+      const blockchainData = {
+        applicationId: applicationNumber,
+        schemeName: scheme?.title || "",
+        applicantName: user?.name || "",
+        applicantEmail: email,
+        documents,
+        status: 'Submitted'
+      };
+
+      const blockchainResult = await blockchainService.logApplication(blockchainData);
+      
+      if (!blockchainResult) {
+        throw new Error("Failed to log application to blockchain");
+      }
+
       // Save application data and show acknowledgment
       setApplicationData(submissionData);
       setShowAcknowledgment(true);
-      toast.success("Application submitted successfully!");
+      toast.success("Application submitted and logged to blockchain successfully!");
 
     } catch (error) {
       console.error("Error submitting application:", error);
