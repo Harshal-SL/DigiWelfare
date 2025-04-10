@@ -54,11 +54,11 @@ export const DigilockerSimulator = ({
   onCancel 
 }: DigilockerSimulatorProps) => {
   const [stage, setStage] = useState<'otp' | 'connecting' | 'success'>('otp');
-  const [value, setValue] = useState("");
+  const [otp, setOtp] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleVerifyOTP = () => {
-    if (value.length !== 6) {
+    if (otp.length !== 6) {
       return;
     }
 
@@ -105,16 +105,15 @@ export const DigilockerSimulator = ({
             <Label htmlFor="otp">Enter OTP</Label>
             <InputOTP 
               maxLength={6} 
-              value={value} 
-              onChange={(val) => setValue(val)}
-              render={({ slots }) => (
-                <InputOTPGroup>
-                  {slots.map((slot, i) => (
-                    <InputOTPSlot key={i} {...slot} index={i} />
-                  ))}
-                </InputOTPGroup>
-              )}
-            />
+              value={otp} 
+              onChange={setOtp}
+            >
+              <InputOTPGroup>
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <InputOTPSlot key={i} index={i} />
+                ))}
+              </InputOTPGroup>
+            </InputOTP>
             <p className="text-xs text-muted-foreground mt-1">
               Enter any 6 digits for demo purposes
             </p>
@@ -123,7 +122,7 @@ export const DigilockerSimulator = ({
           <Button 
             onClick={handleVerifyOTP} 
             className="w-full"
-            disabled={value.length !== 6 || isLoading}
+            disabled={otp.length !== 6 || isLoading}
           >
             {isLoading ? (
               <>
