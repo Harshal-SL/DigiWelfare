@@ -396,6 +396,7 @@ const AdminDashboard = () => {
           </DialogHeader>
           {selectedApplication && (
             <div className="space-y-6">
+              {/* Application Status */}
               <div className="space-y-2">
                 <h3 className="font-semibold">Application Status</h3>
                 <Badge
@@ -411,18 +412,66 @@ const AdminDashboard = () => {
                 </Badge>
               </div>
 
+              {/* Applicant Information */}
+              <div className="space-y-2">
+                <h3 className="font-semibold">Applicant Information</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Name</p>
+                    <p className="font-medium">{selectedApplication.userName}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">User ID</p>
+                    <p className="font-medium">{selectedApplication.userId}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Scheme Information */}
+              <div className="space-y-2">
+                <h3 className="font-semibold">Scheme Information</h3>
+                <div>
+                  <p className="text-sm text-gray-500">Scheme Name</p>
+                  <p className="font-medium">
+                    {schemes.find(s => s.id === selectedApplication.schemeId)?.title || "Unknown Scheme"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Submitted Documents */}
               <div className="space-y-2">
                 <h3 className="font-semibold">Submitted Documents</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {selectedApplication.documents.map((doc, index) => (
                     <div key={index} className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
                       <FileText className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm">{doc}</span>
+                      <span className="text-sm">{doc.name}</span>
+                      <a 
+                        href={doc.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        View
+                      </a>
                     </div>
                   ))}
                 </div>
               </div>
 
+              {/* Eligibility Score */}
+              <div className="space-y-2">
+                <h3 className="font-semibold">Eligibility Score</h3>
+                <div className={`text-lg font-medium 
+                  ${(selectedApplication.eligibilityScore || 0) >= 70 ? 'text-green-600' : 
+                    (selectedApplication.eligibilityScore || 0) >= 50 ? 'text-yellow-600' : 
+                    'text-red-600'}`}
+                >
+                  {selectedApplication.eligibilityScore || 0}%
+                </div>
+              </div>
+
+              {/* Additional Information */}
               {selectedApplication.additionalInfo && (
                 <div className="space-y-2">
                   <h3 className="font-semibold">Additional Information</h3>
@@ -430,6 +479,7 @@ const AdminDashboard = () => {
                 </div>
               )}
 
+              {/* Rejection Reason */}
               {selectedApplication.status === "rejected" && selectedApplication.adminComment && (
                 <div className="space-y-2">
                   <h3 className="font-semibold">Rejection Reason</h3>
@@ -437,12 +487,35 @@ const AdminDashboard = () => {
                 </div>
               )}
 
+              {/* Application Timeline */}
               <div className="space-y-2">
                 <h3 className="font-semibold">Application Timeline</h3>
-                <p className="text-sm text-gray-600">
-                  Submitted on {new Date(selectedApplication.submittedAt).toLocaleDateString()}
-                </p>
+                <div className="space-y-1">
+                  <p className="text-sm text-gray-600">
+                    Submitted on {new Date(selectedApplication.submittedAt).toLocaleDateString()}
+                  </p>
+                  {selectedApplication.reviewedAt && (
+                    <p className="text-sm text-gray-600">
+                      Reviewed on {new Date(selectedApplication.reviewedAt).toLocaleDateString()}
+                    </p>
+                  )}
+                  {selectedApplication.reviewedBy && (
+                    <p className="text-sm text-gray-600">
+                      Reviewed by {selectedApplication.reviewedBy}
+                    </p>
+                  )}
+                </div>
               </div>
+
+              {/* Transaction Information */}
+              {selectedApplication.transactionHash && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold">Transaction Information</h3>
+                  <p className="text-sm text-gray-600">
+                    Transaction Hash: {selectedApplication.transactionHash}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>

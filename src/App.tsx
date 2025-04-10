@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { AuthProvider } from "./contexts/AuthContext";
+import ChatBot from "./components/ChatBot";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -55,6 +56,7 @@ const App = () => (
               </Routes>
             </main>
             <Footer />
+            <ChatBot />
           </div>
         </BrowserRouter>
       </AuthProvider>

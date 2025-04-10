@@ -5,13 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 
 const LoginPage = () => {
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
+  const [showUserPassword, setShowUserPassword] = useState(false);
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
   const { login, adminLogin, isLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -19,6 +22,7 @@ const LoginPage = () => {
     e.preventDefault();
     const success = await login(userId, userPassword);
     if (success) {
+      toast.success("Login successful!");
       navigate("/dashboard");
     }
   };
@@ -27,6 +31,7 @@ const LoginPage = () => {
     e.preventDefault();
     const success = await adminLogin(adminEmail, adminPassword);
     if (success) {
+      toast.success("Login successful!");
       navigate("/admin");
     }
   };
@@ -66,20 +71,39 @@ const LoginPage = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="userPassword">Password</Label>
-                    <a href="/forgot-password" className="text-sm text-welfare-600 hover:text-welfare-500">
-                      Forgot password?
-                    </a>
+                  <Label htmlFor="password">Password</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showUserPassword ? "text" : "password"}
+                      value={userPassword}
+                      onChange={(e) => setUserPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowUserPassword(!showUserPassword)}
+                    >
+                      {showUserPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </Button>
                   </div>
-                  <Input
-                    id="userPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    required
-                    value={userPassword}
-                    onChange={(e) => setUserPassword(e.target.value)}
-                  />
+                  <div className="flex justify-end">
+                    <Button
+                      variant="link"
+                      className="text-sm text-blue-600 hover:text-blue-700"
+                      onClick={() => navigate("/forgot-password")}
+                    >
+                      Forgot Password?
+                    </Button>
+                  </div>
                 </div>
                 <div className="pt-2">
                   <Button type="submit" className="w-full" disabled={isLoading}>
@@ -119,18 +143,30 @@ const LoginPage = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="adminPassword">Password</Label>
-                    <a href="/forgot-password" className="text-sm text-welfare-600 hover:text-welfare-500">
-                      Forgot password?
-                    </a>
                   </div>
-                  <Input
-                    id="adminPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    required
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="adminPassword"
+                      type={showAdminPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      required
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      onClick={() => setShowAdminPassword(!showAdminPassword)}
+                    >
+                      {showAdminPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
                 <div className="pt-2">
                   <Button type="submit" className="w-full" disabled={isLoading}>
