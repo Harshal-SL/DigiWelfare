@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -16,12 +15,19 @@ import {
 import { schemes, applications, Application } from "@/data/mockData";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 
 const AdminDashboard = () => {
   const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [localApplications, setLocalApplications] = useState<Application[]>(applications);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+  const [rejectionComment, setRejectionComment] = useState("");
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
   // Check if user is logged in and is an admin, if not redirect
   useEffect(() => {
@@ -57,21 +63,40 @@ const AdminDashboard = () => {
     toast.success("Application approved successfully");
   };
 
-  const handleReject = (applicationId: string) => {
-    setLocalApplications(prev => 
-      prev.map(app => 
-        app.id === applicationId 
-          ? {
-              ...app, 
-              status: "rejected", 
-              reviewedBy: user?.name || "Admin", 
-              reviewedAt: new Date().toISOString(),
-              rejectionReason: "Does not meet eligibility criteria."
-            } 
-          : app
-      )
-    );
-    toast.success("Application rejected successfully");
+  const handleRejectApplication = async (application: Application) => {
+    setSelectedApplication(application);
+    setIsRejectDialogOpen(true);
+  };
+
+  const handleConfirmReject = async () => {
+    if (!selectedApplication) return;
+
+    try {
+      // Simulate API call to reject application
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const index = localApplications.findIndex(app => app.id === selectedApplication.id);
+      if (index !== -1) {
+        localApplications[index] = {
+          ...localApplications[index],
+          status: "rejected",
+          adminComment: rejectionComment
+        };
+      }
+      
+      toast.success("Application rejected successfully!");
+      setIsRejectDialogOpen(false);
+      setRejectionComment("");
+      setSelectedApplication(null);
+    } catch (error) {
+      console.error("Error rejecting application:", error);
+      toast.error("Failed to reject application. Please try again.");
+    }
+  };
+
+  const handleViewApplication = (application: Application) => {
+    setSelectedApplication(application);
+    setIsViewDialogOpen(true);
   };
 
   const filteredApplications = localApplications.filter(app => {
@@ -194,7 +219,8 @@ const AdminDashboard = () => {
             {renderApplicationsTable(
               filteredApplications.filter(app => app.status === "pending"),
               handleApprove, 
-              handleReject
+              handleRejectApplication,
+              handleViewApplication
             )}
           </TabsContent>
           
@@ -202,7 +228,8 @@ const AdminDashboard = () => {
             {renderApplicationsTable(
               filteredApplications.filter(app => app.status === "approved"),
               handleApprove, 
-              handleReject
+              handleRejectApplication,
+              handleViewApplication
             )}
           </TabsContent>
           
@@ -210,12 +237,13 @@ const AdminDashboard = () => {
             {renderApplicationsTable(
               filteredApplications.filter(app => app.status === "rejected"),
               handleApprove, 
-              handleReject
+              handleRejectApplication,
+              handleViewApplication
             )}
           </TabsContent>
           
           <TabsContent value="all" className="p-6">
-            {renderApplicationsTable(filteredApplications, handleApprove, handleReject)}
+            {renderApplicationsTable(filteredApplications, handleApprove, handleRejectApplication, handleViewApplication)}
           </TabsContent>
         </Tabs>
       </div>
@@ -316,6 +344,109 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Reject Application Dialog */}
+      <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reject Application</DialogTitle>
+            <DialogDescription>
+              Please provide a reason for rejecting this application.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Textarea
+              value={rejectionComment}
+              onChange={(e) => setRejectionComment(e.target.value)}
+              placeholder="Enter rejection reason..."
+              className="min-h-[100px]"
+              required
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsRejectDialogOpen(false);
+                setRejectionComment("");
+                setSelectedApplication(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleConfirmReject}
+              disabled={!rejectionComment.trim()}
+            >
+              Reject Application
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Application Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Application Details</DialogTitle>
+            <DialogDescription>
+              View the complete application information.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedApplication && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h3 className="font-semibold">Application Status</h3>
+                <Badge
+                  className={
+                    selectedApplication.status === "approved"
+                      ? "bg-green-100 text-green-800"
+                      : selectedApplication.status === "rejected"
+                      ? "bg-red-100 text-red-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }
+                >
+                  {selectedApplication.status.charAt(0).toUpperCase() + selectedApplication.status.slice(1)}
+                </Badge>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="font-semibold">Submitted Documents</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {selectedApplication.documents.map((doc, index) => (
+                    <div key={index} className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+                      <FileText className="h-4 w-4 text-gray-500" />
+                      <span className="text-sm">{doc}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {selectedApplication.additionalInfo && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold">Additional Information</h3>
+                  <p className="text-sm text-gray-600">{selectedApplication.additionalInfo}</p>
+                </div>
+              )}
+
+              {selectedApplication.status === "rejected" && selectedApplication.adminComment && (
+                <div className="space-y-2">
+                  <h3 className="font-semibold">Rejection Reason</h3>
+                  <p className="text-sm text-red-600">{selectedApplication.adminComment}</p>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <h3 className="font-semibold">Application Timeline</h3>
+                <p className="text-sm text-gray-600">
+                  Submitted on {new Date(selectedApplication.submittedAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
@@ -324,7 +455,8 @@ const AdminDashboard = () => {
 const renderApplicationsTable = (
   applications: Application[], 
   handleApprove: (id: string) => void, 
-  handleReject: (id: string) => void
+  handleReject: (application: Application) => void,
+  handleView: (application: Application) => void
 ) => {
   if (applications.length === 0) {
     return (
@@ -396,6 +528,13 @@ const renderApplicationsTable = (
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => handleView(application)}
+                    >
+                      View
+                    </Button>
                     {application.status === "pending" && (
                       <>
                         <Button 
@@ -410,19 +549,12 @@ const renderApplicationsTable = (
                           variant="outline" 
                           size="sm"
                           className="text-red-600 border-red-600 hover:bg-red-50"
-                          onClick={() => handleReject(application.id)}
+                          onClick={() => handleReject(application)}
                         >
                           Reject
                         </Button>
                       </>
                     )}
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => alert(`View details of application ${application.id}`)}
-                    >
-                      View
-                    </Button>
                   </div>
                 </td>
               </tr>

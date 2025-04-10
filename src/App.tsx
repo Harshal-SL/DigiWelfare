@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,10 @@ import SchemesPage from "./pages/SchemesPage";
 import SchemeDetail from "./pages/SchemeDetail";
 import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import SchemeApplicationPage from "./pages/SchemeApplicationPage";
+import AdminNewSchemePage from "./pages/AdminNewSchemePage";
+import EditSchemePage from "@/pages/EditSchemePage";
 
 const queryClient = new QueryClient();
 
@@ -36,14 +39,18 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/profile-setup" element={<ProfileSetupPage />} />
                 <Route path="/profile" element={<ProfileUpdatePage />} />
                 <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/new-scheme" element={<AdminNewSchemePage />} />
                 <Route path="/schemes" element={<SchemesPage />} />
                 <Route path="/schemes/:schemeId" element={<SchemeDetail />} />
+                <Route path="/schemes/:schemeId/apply" element={<SchemeApplicationPage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/admin/schemes/:schemeId" element={<EditSchemePage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

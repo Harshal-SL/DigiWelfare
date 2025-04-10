@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,11 +6,14 @@ import {
   Clock, 
   ExternalLink, 
   FileText, 
-  XCircle 
+  XCircle,
+  AlertCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { schemes, applications } from "@/data/mockData";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 const UserDashboard = () => {
   const { user, isLoggedIn } = useAuth();
@@ -37,6 +39,52 @@ const UserDashboard = () => {
   const availableSchemes = schemes.filter(
     scheme => !appliedSchemeIds.includes(scheme.id) && scheme.status === "active"
   );
+
+  const renderApplicationStatus = (application: Application) => {
+    const scheme = schemes.find(s => s.id === application.schemeId);
+    if (!scheme) return null;
+
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold">{scheme.title}</h3>
+            <p className="text-sm text-gray-500">
+              Applied on {new Date(application.submittedAt).toLocaleDateString()}
+            </p>
+          </div>
+          <Badge
+            className={
+              application.status === "approved"
+                ? "bg-green-100 text-green-800"
+                : application.status === "rejected"
+                ? "bg-red-100 text-red-800"
+                : "bg-yellow-100 text-yellow-800"
+            }
+          >
+            {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
+          </Badge>
+        </div>
+
+        {application.status === "rejected" && application.adminComment && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Rejection Reason</AlertTitle>
+            <AlertDescription>
+              {application.adminComment}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="text-sm text-gray-600">
+          <p>Required Documents: {application.documents.join(", ")}</p>
+          {application.additionalInfo && (
+            <p className="mt-2">Additional Information: {application.additionalInfo}</p>
+          )}
+        </div>
+      </div>
+    );
+  };
 
   if (!isLoggedIn) {
     return null; // Will redirect to login
@@ -184,27 +232,10 @@ const UserDashboard = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {userApplications.map((application) => {
-                        const scheme = schemes.find(s => s.id === application.schemeId);
                         return (
                           <tr key={application.id}>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">
-                                {scheme?.title || "Unknown Scheme"}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-500">
-                                {new Date(application.submittedAt).toLocaleDateString()}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                ${application.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                                  application.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                                  'bg-yellow-100 text-yellow-800'}`}
-                              >
-                                {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                              </span>
+                              {renderApplicationStatus(application)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                               {application.transactionHash ? (

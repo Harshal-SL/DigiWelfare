@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,7 +68,7 @@ const LoginPage = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="userPassword">Password</Label>
-                    <a href="#" className="text-sm text-welfare-600 hover:text-welfare-500">
+                    <a href="/forgot-password" className="text-sm text-welfare-600 hover:text-welfare-500">
                       Forgot password?
                     </a>
                   </div>
@@ -120,7 +119,7 @@ const LoginPage = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="adminPassword">Password</Label>
-                    <a href="#" className="text-sm text-welfare-600 hover:text-welfare-500">
+                    <a href="/forgot-password" className="text-sm text-welfare-600 hover:text-welfare-500">
                       Forgot password?
                     </a>
                   </div>

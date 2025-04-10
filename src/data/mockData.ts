@@ -1,4 +1,3 @@
-
 export interface Scheme {
   id: string;
   title: string;
@@ -14,17 +13,13 @@ export interface Scheme {
 
 export interface Application {
   id: string;
-  schemeId: string;
   userId: string;
-  userName: string;
+  schemeId: string;
   status: "pending" | "approved" | "rejected";
   submittedAt: string;
-  documents: { name: string; url: string }[];
-  eligibilityScore?: number;
-  reviewedBy?: string;
-  reviewedAt?: string;
-  rejectionReason?: string;
-  transactionHash?: string;
+  documents: string[];
+  additionalInfo: string;
+  adminComment?: string;
 }
 
 export const schemes: Scheme[] = [

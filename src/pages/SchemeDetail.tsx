@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { schemes } from "@/data/mockData";
@@ -52,8 +51,6 @@ const SchemeDetail = () => {
       return;
     }
     
-    // In a real application, this would navigate to an application form
-    toast.success("Application process initiated");
     navigate(`/schemes/${schemeId}/apply`);
   };
 
