@@ -203,15 +203,6 @@ const LoginPage = () => {
                       )}
                     </Button>
                   </div>
-                  <div className="flex justify-end">
-                    <Button
-                      variant="link"
-                      className="text-sm text-blue-600 hover:text-blue-700"
-                      onClick={() => navigate("/forgot-password")}
-                    >
-                      Forgot Password?
-                    </Button>
-                  </div>
                 </div>
                 <div className="pt-2">
                   <Button type="submit" className="w-full" disabled={isLoading}>
@@ -227,6 +218,15 @@ const LoginPage = () => {
                 </div>
               </div>
             </form>
+            <div className="flex justify-end mt-2">
+              <Button
+                variant="link"
+                className="text-sm text-blue-600 hover:text-blue-700"
+                onClick={() => navigate("/forgot-password")}
+              >
+                Forgot Password?
+              </Button>
+            </div>
             <div className="mt-6 text-center text-sm">
               <p className="text-gray-600">
                 Demo credentials: <span className="font-semibold">AID123456 / password</span>
