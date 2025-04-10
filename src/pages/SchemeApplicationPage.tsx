@@ -85,16 +85,11 @@ const SchemeApplicationPage = () => {
       // Simulate API call to submit application
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // In a real application, this would:
-      // 1. Upload documents to storage
-      // 2. Create application record in database
-      // 3. Send confirmation email
-      
       const applicationNumber = `DW${Date.now()}${Math.floor(Math.random() * 1000)}`;
       const submissionData = {
         applicationNumber,
-        schemeName: scheme.title,
-        applicantName: user.name,
+        schemeName: scheme?.title || "",
+        applicantName: user?.name || "",
         dateOfSubmission: new Date().toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
@@ -104,13 +99,14 @@ const SchemeApplicationPage = () => {
         }),
         applicantEmail: email,
         applicantPhone: phoneNumber,
-        applicantAddress: user.address,
+        applicantAddress: user?.address || "",
         status: 'Submitted'
       };
 
-      // Save application data
+      // Save application data and show acknowledgment
       setApplicationData(submissionData);
       setShowAcknowledgment(true);
+      toast.success("Application submitted successfully!");
 
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -130,22 +126,32 @@ const SchemeApplicationPage = () => {
         <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 border-0">
           <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
             <div className="flex items-center gap-3 mb-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate(`/schemes/${schemeId}`)}
-                className="text-white hover:bg-white/20"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <CardTitle className="text-3xl font-bold">Apply for {scheme.title}</CardTitle>
+              {!showAcknowledgment && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => navigate(`/schemes/${schemeId}`)}
+                  className="text-white hover:bg-white/20"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              )}
+              <CardTitle className="text-3xl font-bold">
+                {showAcknowledgment ? "Application Submitted" : `Apply for ${scheme?.title}`}
+              </CardTitle>
             </div>
             <CardDescription className="text-blue-100">
-              Please fill out the application form and upload the required documents.
+              {showAcknowledgment 
+                ? "Your application has been successfully submitted. Please download your acknowledgment receipt."
+                : "Please fill out the application form and upload the required documents."}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-8 bg-white rounded-b-lg">
-            {!showAcknowledgment ? (
+            {showAcknowledgment ? (
+              <div className="animate-fadeIn">
+                <AcknowledgmentReceipt applicationData={applicationData} />
+              </div>
+            ) : (
               <form onSubmit={handleSubmit} className="space-y-10">
                 {/* Progress Indicator */}
                 <div className="flex items-center justify-between mb-8">
@@ -359,8 +365,6 @@ const SchemeApplicationPage = () => {
                   )}
                 </Button>
               </form>
-            ) : (
-              <AcknowledgmentReceipt applicationData={applicationData} />
             )}
           </CardContent>
         </Card>
