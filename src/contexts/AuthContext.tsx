@@ -9,13 +9,14 @@ type User = {
   email: string;
   role: "user" | "admin";
   aadhaarId?: string;
+  userId?: string;
 };
 
 type AuthContextType = {
   user: User | null;
   isLoggedIn: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (userId: string, password: string) => Promise<boolean>;
   adminLogin: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
 };
@@ -36,22 +37,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // Simulate login for demo purposes
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (userId: string, password: string): Promise<boolean> => {
     try {
       setIsLoading(true);
       
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Validate credentials (in a real app, this would be done on the server)
-      if (email === "user@example.com" && password === "password") {
-        const userData: User = {
-          id: "user-1",
-          name: "John Doe",
-          email: "user@example.com",
-          role: "user",
-          aadhaarId: "1234-5678-9012"
-        };
+      // Check if there's a registered user with this ID in localStorage
+      const tempUserData = localStorage.getItem("tempUserData");
+      
+      // For demo purposes, we'll accept both the hardcoded credentials and any registered user
+      if ((userId === "AID123456" && password === "password") || 
+          (tempUserData && JSON.parse(tempUserData).userId === userId && JSON.parse(tempUserData).password === password)) {
+        
+        // If it's a registered user, use their data
+        let userData: User;
+        
+        if (tempUserData && JSON.parse(tempUserData).userId === userId) {
+          const registeredUser = JSON.parse(tempUserData);
+          userData = {
+            id: "user-" + Math.random().toString(36).substr(2, 9),
+            name: registeredUser.name || "Registered User",
+            email: registeredUser.email,
+            role: "user",
+            aadhaarId: registeredUser.aadhaarId,
+            userId: registeredUser.userId
+          };
+        } else {
+          // Use demo data
+          userData = {
+            id: "user-1",
+            name: "John Doe",
+            email: "user@example.com",
+            role: "user",
+            aadhaarId: "1234-5678-9012",
+            userId: "AID123456"
+          };
+        }
         
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
 const LoginPage = () => {
-  const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [adminEmail, setAdminEmail] = useState("");
   const [adminPassword, setAdminPassword] = useState("");
@@ -18,7 +18,7 @@ const LoginPage = () => {
 
   const handleUserLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await login(userEmail, userPassword);
+    const success = await login(userId, userPassword);
     if (success) {
       navigate("/dashboard");
     }
@@ -56,14 +56,14 @@ const LoginPage = () => {
             <form onSubmit={handleUserLogin}>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="userEmail">Email</Label>
+                  <Label htmlFor="userId">User ID</Label>
                   <Input
-                    id="userEmail"
-                    type="email"
-                    placeholder="user@example.com"
+                    id="userId"
+                    type="text"
+                    placeholder="Your User ID (e.g., AID123456)"
                     required
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
+                    value={userId}
+                    onChange={(e) => setUserId(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -98,7 +98,7 @@ const LoginPage = () => {
             </form>
             <div className="mt-6 text-center text-sm">
               <p className="text-gray-600">
-                Demo credentials: <span className="font-semibold">user@example.com / password</span>
+                Demo credentials: <span className="font-semibold">AID123456 / password</span>
               </p>
             </div>
           </TabsContent>

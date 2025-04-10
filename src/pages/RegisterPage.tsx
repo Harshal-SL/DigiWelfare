@@ -17,6 +17,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Loader2, KeyRound, User } from "lucide-react";
 import { DigilockerSimulator } from "@/components/DigilockerSimulator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -27,6 +28,8 @@ const RegisterPage = () => {
   const [aadhaarNumber, setAadhaarNumber] = useState("");
   const [hasConsented, setHasConsented] = useState(false);
   const [showDigilocker, setShowDigilocker] = useState(false);
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+  const [userId, setUserId] = useState("");
   const { isLoggedIn } = useAuth();
 
   // If the user is already logged in, redirect them to the dashboard
@@ -69,18 +72,31 @@ const RegisterPage = () => {
     
     // Simulate API call delay
     setTimeout(() => {
-      toast.success("Registration successful! Redirecting to profile setup");
+      // Generate a unique user ID (In a real app, this would be done server-side)
+      const generatedUserId = "AID" + Math.floor(100000 + Math.random() * 900000);
+      setUserId(generatedUserId);
       
       // Store user data in localStorage to simulate a successful registration
       localStorage.setItem("tempUserData", JSON.stringify({
         email,
+        userId: generatedUserId,
         aadhaarId: aadhaarNumber,
+        password, // In a real app, this would be hashed server-side
         ...userData
       }));
       
       setIsLoading(false);
-      navigate("/profile-setup");
+      setRegistrationComplete(true);
+      toast.success("Registration successful! Please note your User ID");
     }, 1500);
+  };
+
+  const handleContinueToProfile = () => {
+    navigate("/profile-setup");
+  };
+
+  const handleGoToLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -98,7 +114,29 @@ const RegisterPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {showDigilocker ? (
+          {registrationComplete ? (
+            <div className="space-y-6">
+              <Alert className="bg-green-50 border-green-200">
+                <AlertTitle className="text-green-800 font-semibold">Registration Successful!</AlertTitle>
+                <AlertDescription className="text-green-700">
+                  <p className="mb-2">Your account has been created successfully.</p>
+                  <div className="bg-green-100 p-3 rounded-md mb-3 text-center">
+                    <p className="text-sm font-medium mb-1">Your User ID</p>
+                    <p className="text-lg font-bold tracking-wide">{userId}</p>
+                  </div>
+                  <p className="text-sm mb-4">Please save your User ID. You will need it to log in.</p>
+                </AlertDescription>
+              </Alert>
+              <div className="flex flex-col gap-2">
+                <Button onClick={handleContinueToProfile} className="w-full">
+                  Continue to Profile Setup
+                </Button>
+                <Button variant="outline" onClick={handleGoToLogin} className="w-full">
+                  Go to Login Page
+                </Button>
+              </div>
+            </div>
+          ) : showDigilocker ? (
             <DigilockerSimulator 
               aadhaarNumber={aadhaarNumber} 
               onSuccess={handleDigilockerSuccess} 
