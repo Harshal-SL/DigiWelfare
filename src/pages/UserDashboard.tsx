@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { 
   CheckCircle2, 
   Clock, 
@@ -12,8 +12,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { schemes, applications } from "@/data/mockData";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+import { Badge } from "../components/ui/badge";
 
 const UserDashboard = () => {
   const { user, isLoggedIn } = useAuth();
@@ -54,12 +54,12 @@ const UserDashboard = () => {
             </p>
           </div>
           <Badge
-            className={
+            variant={
               application.status === "approved"
-                ? "bg-green-100 text-green-800"
+                ? "success"
                 : application.status === "rejected"
-                ? "bg-red-100 text-red-800"
-                : "bg-yellow-100 text-yellow-800"
+                ? "destructive"
+                : "secondary"
             }
           >
             {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
@@ -82,6 +82,18 @@ const UserDashboard = () => {
             <p className="mt-2">Additional Information: {application.additionalInfo}</p>
           )}
         </div>
+
+        {application.status === "rejected" && (
+          <div className="mt-4">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate(`/schemes/${application.schemeId}/apply`)}
+            >
+              Reapply for this Scheme
+            </Button>
+          </div>
+        )}
       </div>
     );
   };

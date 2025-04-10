@@ -6,24 +6,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "../components/ui/table";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs";
+} from "../components/ui/tabs";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle2, Wallet, Clock, CheckCircle, XCircle } from "lucide-react";
+} from "../components/ui/select";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Loader2, CheckCircle2, Wallet, Clock, CheckCircle, XCircle, MessageSquare } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../components/ui/dialog";
+import { Textarea } from "../components/ui/textarea";
+import { logToBlockchain } from "../utils/blockchainLogger";
 
 interface Applicant {
   id: string;
@@ -37,6 +40,9 @@ interface Applicant {
   documents: string[];
   eligibilityScore?: number;
   paymentStatus?: 'pending' | 'completed';
+  adminComment?: string;
+  transactionHash?: string;
+  paymentTimestamp?: string;
 }
 
 interface Scheme {
@@ -52,6 +58,9 @@ export const AdminApplicantsList = () => {
   const [selectedScheme, setSelectedScheme] = useState<string>('');
   const [selectedStatus, setSelectedStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [processingPayment, setProcessingPayment] = useState<string | null>(null);
+  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
+  const [rejectionComment, setRejectionComment] = useState('');
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -76,27 +85,115 @@ export const AdminApplicantsList = () => {
   const handleInitiatePayment = async (applicantId: string) => {
     setProcessingPayment(applicantId);
     try {
+      // Find the applicant and scheme details
+      const applicant = selectedSchemeData?.applicants.find(app => app.id === applicantId);
+      if (!applicant || !selectedSchemeData) {
+        throw new Error('Applicant or scheme not found');
+      }
+
       // Simulate API call to initiate payment
       await new Promise(resolve => setTimeout(resolve, 2000));
       
+      // Log to blockchain
+      const blockchainLog = await logToBlockchain({
+        applicantId: applicant.userId,
+        schemeId: selectedSchemeData.id,
+        amount: 10000, // Fixed amount for demonstration
+        metadata: {
+          applicantName: applicant.name,
+          schemeName: selectedSchemeData.name,
+          eligibilityScore: applicant.eligibilityScore || 0,
+        },
+      });
+
       // Update payment status in local state
       setSchemes(prevSchemes => 
         prevSchemes.map(scheme => ({
           ...scheme,
           applicants: scheme.applicants.map(applicant => 
             applicant.id === applicantId
-              ? { ...applicant, paymentStatus: 'completed' }
+              ? { 
+                  ...applicant, 
+                  paymentStatus: 'completed',
+                  transactionHash: blockchainLog.transactionHash,
+                  paymentTimestamp: blockchainLog.timestamp
+                }
               : applicant
           )
         }))
       );
       
       toast.success("Payment initiated successfully!");
+      console.log('Payment Transaction Details:', {
+        transactionHash: blockchainLog.transactionHash,
+        timestamp: blockchainLog.timestamp,
+        applicantDetails: {
+          id: applicant.userId,
+          name: applicant.name,
+          scheme: selectedSchemeData.name,
+        }
+      });
     } catch (error) {
       console.error('Error initiating payment:', error);
       toast.error("Failed to initiate payment. Please try again.");
     } finally {
       setProcessingPayment(null);
+    }
+  };
+
+  const handleApprove = async (applicantId: string) => {
+    try {
+      // Simulate API call to approve application
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSchemes(prevSchemes => 
+        prevSchemes.map(scheme => ({
+          ...scheme,
+          applicants: scheme.applicants.map(applicant => 
+            applicant.id === applicantId
+              ? { ...applicant, status: 'approved' }
+              : applicant
+          )
+        }))
+      );
+      
+      toast.success("Application approved successfully!");
+    } catch (error) {
+      console.error('Error approving application:', error);
+      toast.error("Failed to approve application. Please try again.");
+    }
+  };
+
+  const handleReject = (applicant: Applicant) => {
+    setSelectedApplicant(applicant);
+    setIsRejectDialogOpen(true);
+  };
+
+  const handleConfirmReject = async () => {
+    if (!selectedApplicant || !rejectionComment.trim()) return;
+
+    try {
+      // Simulate API call to reject application
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSchemes(prevSchemes => 
+        prevSchemes.map(scheme => ({
+          ...scheme,
+          applicants: scheme.applicants.map(applicant => 
+            applicant.id === selectedApplicant.id
+              ? { ...applicant, status: 'rejected', adminComment: rejectionComment }
+              : applicant
+          )
+        }))
+      );
+      
+      toast.success("Application rejected successfully!");
+      setIsRejectDialogOpen(false);
+      setRejectionComment('');
+      setSelectedApplicant(null);
+    } catch (error) {
+      console.error('Error rejecting application:', error);
+      toast.error("Failed to reject application. Please try again.");
     }
   };
 
@@ -382,10 +479,10 @@ export const AdminApplicantsList = () => {
         </Tabs>
       </div>
 
-      {selectedScheme ? (
+      {selectedSchemeData ? (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">{selectedSchemeData?.name}</h3>
+            <h3 className="text-lg font-semibold">{selectedSchemeData.name}</h3>
             <p className="text-sm text-gray-500">
               {filteredApplicants.length} {selectedStatus} applications
             </p>
@@ -400,6 +497,7 @@ export const AdminApplicantsList = () => {
                 <TableHead>AI Score</TableHead>
                 <TableHead>Application Date</TableHead>
                 {selectedStatus === 'approved' && <TableHead>Payment Status</TableHead>}
+                {selectedStatus === 'rejected' && <TableHead>Rejection Reason</TableHead>}
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -410,50 +508,16 @@ export const AdminApplicantsList = () => {
                   <TableCell>{applicant.name}</TableCell>
                   <TableCell>{applicant.email}</TableCell>
                   <TableCell>
-                    <Badge
-                      className={
-                        (applicant.eligibilityScore || 0) >= 70
-                          ? "bg-green-100 text-green-800"
-                          : (applicant.eligibilityScore || 0) >= 50
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                      }
-                    >
-                      {applicant.eligibilityScore || 0}%
+                    <Badge variant={applicant.eligibilityScore && applicant.eligibilityScore >= 70 ? "success" : "warning"}>
+                      {applicant.eligibilityScore}%
                     </Badge>
                   </TableCell>
                   <TableCell>{new Date(applicant.applicationDate).toLocaleDateString()}</TableCell>
                   {selectedStatus === 'approved' && (
                     <TableCell>
                       {applicant.paymentStatus === 'completed' ? (
-                        <Badge className="bg-green-100 text-green-800">
-                          <div className="flex items-center gap-1">
-                            <CheckCircle2 className="h-3 w-3" />
-                            <span>Payment Done</span>
-                          </div>
-                        </Badge>
+                        <Badge variant="success">Completed</Badge>
                       ) : (
-                        <Badge className="bg-yellow-100 text-yellow-800">
-                          <div className="flex items-center gap-1">
-                            <Wallet className="h-3 w-3" />
-                            <span>Payment Pending</span>
-                          </div>
-                        </Badge>
-                      )}
-                    </TableCell>
-                  )}
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      {selectedStatus === 'pending' ? (
-                        <>
-                          <Button variant="outline" size="sm">
-                            Review
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            View Documents
-                          </Button>
-                        </>
-                      ) : selectedStatus === 'approved' && applicant.paymentStatus !== 'completed' ? (
                         <Button
                           variant="outline"
                           size="sm"
@@ -461,24 +525,46 @@ export const AdminApplicantsList = () => {
                           disabled={processingPayment === applicant.id}
                         >
                           {processingPayment === applicant.id ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Processing...
-                            </>
+                            <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            <>
-                              <Wallet className="mr-2 h-4 w-4" />
-                              Initiate Payment
-                            </>
+                            <Wallet className="h-4 w-4" />
                           )}
+                          <span className="ml-2">Initiate Payment</span>
                         </Button>
+                      )}
+                    </TableCell>
+                  )}
+                  {selectedStatus === 'rejected' && (
+                    <TableCell>
+                      {applicant.adminComment ? (
+                        <div className="flex items-center gap-2">
+                          <MessageSquare className="h-4 w-4 text-gray-500" />
+                          <span className="text-sm text-gray-600">{applicant.adminComment}</span>
+                        </div>
                       ) : (
+                        <span className="text-sm text-gray-500">No comment provided</span>
+                      )}
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {selectedStatus === 'pending' && (
                         <>
-                          <Button variant="outline" size="sm">
-                            View Details
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleApprove(applicant.id)}
+                          >
+                            <CheckCircle2 className="h-4 w-4" />
+                            <span className="ml-2">Approve</span>
                           </Button>
-                          <Button variant="outline" size="sm">
-                            View Documents
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => handleReject(applicant)}
+                          >
+                            <XCircle className="h-4 w-4" />
+                            <span className="ml-2">Reject</span>
                           </Button>
                         </>
                       )}
@@ -500,6 +586,46 @@ export const AdminApplicantsList = () => {
           <p className="text-gray-500">Please select a scheme to view applications.</p>
         </div>
       )}
+
+      {/* Reject Application Dialog */}
+      <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reject Application</DialogTitle>
+            <DialogDescription>
+              Please provide a reason for rejecting this application. This comment will be visible to the applicant.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Textarea
+              value={rejectionComment}
+              onChange={(e) => setRejectionComment(e.target.value)}
+              placeholder="Enter rejection reason..."
+              className="min-h-[100px]"
+              required
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsRejectDialogOpen(false);
+                setRejectionComment('');
+                setSelectedApplicant(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleConfirmReject}
+              disabled={!rejectionComment.trim()}
+            >
+              Reject Application
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }; 

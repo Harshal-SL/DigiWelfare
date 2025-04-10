@@ -26,6 +26,7 @@ import AdminNewSchemePage from "./pages/AdminNewSchemePage";
 import EditSchemePage from "@/pages/EditSchemePage";
 import { PaymentPage } from "./pages/PaymentPage";
 import { AcknowledgmentPage } from "./pages/AcknowledgmentPage";
+import ApplicationDetailsPage from "./pages/ApplicationDetailsPage";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
                 <Route path="/acknowledgment" element={<AcknowledgmentPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/admin/schemes/:schemeId" element={<EditSchemePage />} />
+                <Route path="/applications/:applicationId" element={<ApplicationDetailsPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
