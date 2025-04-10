@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ArrowLeft, FileText, Upload } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { schemes } from "@/data/mockData";
+import { schemes, applications } from "@/data/mockData";
 import OTPVerification from "@/components/OTPVerification";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import AcknowledgmentReceipt from "@/components/AcknowledgmentReceipt";
@@ -84,7 +84,7 @@ const SchemeApplicationPage = () => {
 
     try {
       // Generate application number
-      const applicationNumber = `DW${Date.now()}${Math.floor(Math.random() * 1000)}`;
+      const applicationNumber = `app-${Date.now()}`;
       
       // Create submission data
       const submissionData = {
@@ -104,6 +104,22 @@ const SchemeApplicationPage = () => {
         status: 'Submitted'
       };
 
+      // Create application object for local state
+      const newApplication = {
+        id: applicationNumber,
+        schemeId: scheme?.id || "",
+        userId: user?.id || "",
+        userName: user?.name || "",
+        status: "pending",
+        submittedAt: new Date().toISOString(),
+        documents: documents.map(doc => ({
+          name: doc.name,
+          url: URL.createObjectURL(doc)
+        })),
+        additionalInfo: additionalInfo,
+        eligibilityScore: Math.floor(Math.random() * 100) // Simulated eligibility score
+      };
+
       // Log to blockchain
       const blockchainData = {
         applicationId: applicationNumber,
@@ -120,10 +136,18 @@ const SchemeApplicationPage = () => {
         throw new Error("Failed to log application to blockchain");
       }
 
+      // Add application to applications array
+      applications.push(newApplication);
+
       // Save application data and show acknowledgment
       setApplicationData(submissionData);
       setShowAcknowledgment(true);
       toast.success("Application submitted and logged to blockchain successfully!");
+
+      // Redirect to dashboard after 3 seconds
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
 
     } catch (error) {
       console.error("Error submitting application:", error);
