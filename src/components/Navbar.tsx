@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogIn, Menu, X } from "lucide-react";
+import { LogIn, Menu, X, UserPlus, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -48,13 +48,27 @@ export const Navbar = () => {
                 >
                   {user?.role === 'admin' ? 'Admin Panel' : 'Dashboard'}
                 </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => navigate("/profile")}
+                  className="flex items-center gap-2"
+                >
+                  <User size={16} />
+                  Profile
+                </Button>
                 <Button onClick={logout} variant="outline">Logout</Button>
               </div>
             ) : (
-              <Button onClick={() => navigate("/login")} className="flex items-center gap-2">
-                <LogIn size={18} />
-                Login
-              </Button>
+              <div className="flex items-center gap-3">
+                <Button onClick={() => navigate("/register")} variant="outline" className="flex items-center gap-2">
+                  <UserPlus size={18} />
+                  Register
+                </Button>
+                <Button onClick={() => navigate("/login")} className="flex items-center gap-2">
+                  <LogIn size={18} />
+                  Login
+                </Button>
+              </div>
             )}
           </nav>
 
@@ -91,13 +105,34 @@ export const Navbar = () => {
                 >
                   {user?.role === 'admin' ? 'Admin Panel' : 'Dashboard'}
                 </Button>
+                <Button 
+                  variant="outline"
+                  className="justify-start"
+                  onClick={() => {
+                    navigate("/profile");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <User size={16} className="mr-2" />
+                  Profile
+                </Button>
                 <Button onClick={() => {logout(); setIsMenuOpen(false);}} variant="outline">Logout</Button>
               </>
             ) : (
-              <Button onClick={() => {navigate("/login"); setIsMenuOpen(false);}} className="flex items-center gap-2">
-                <LogIn size={18} />
-                Login
-              </Button>
+              <>
+                <Button 
+                  onClick={() => {navigate("/register"); setIsMenuOpen(false);}} 
+                  variant="outline"
+                  className="flex items-center gap-2 justify-start"
+                >
+                  <UserPlus size={18} />
+                  Register
+                </Button>
+                <Button onClick={() => {navigate("/login"); setIsMenuOpen(false);}} className="flex items-center gap-2">
+                  <LogIn size={18} />
+                  Login
+                </Button>
+              </>
             )}
           </nav>
         )}
