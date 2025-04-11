@@ -1,4 +1,3 @@
-
 import { 
   Award,
   Clock,
@@ -17,10 +16,12 @@ const AboutPage = () => {
     <div className="container mx-auto py-8 px-4">
       {/* Hero Section */}
       <section className="text-center mb-16">
-        <h1 className="text-4xl font-bold mb-6">About AidLedger</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          We're revolutionizing social welfare distribution through technology, transparency, and trust.
-        </p>
+        <div className="bg-[#0f698a] text-white p-8 rounded-lg">
+          <h1 className="text-4xl font-bold mb-6">About DigiWelfare</h1>
+          <p className="text-xl max-w-3xl mx-auto">
+            Seamless Welfare Distribution. Trusted, Transparent, AI-Driven.
+          </p>
+        </div>
       </section>
 
       {/* Mission & Vision */}
@@ -89,7 +90,7 @@ const AboutPage = () => {
 
       {/* How It Works */}
       <section className="gradient-bg text-white py-16 px-4 rounded-xl mb-16">
-        <h2 className="text-3xl font-bold mb-12 text-center">How AidLedger Works</h2>
+        <h2 className="text-3xl font-bold mb-12 text-center">How DigiWelfare Works</h2>
         
         <div className="max-w-4xl mx-auto">
           <div className="space-y-12">
@@ -213,7 +214,7 @@ const AboutPage = () => {
 
       {/* CTA Section */}
       <section className="bg-welfare-50 p-8 md:p-12 rounded-xl text-center">
-        <h2 className="text-2xl font-bold mb-4">Ready to Experience AidLedger?</h2>
+        <h2 className="text-2xl font-bold mb-4">Ready to Experience DigiWelfare?</h2>
         <p className="text-gray-700 mb-8 max-w-2xl mx-auto">
           Join thousands of citizens who are benefiting from a transparent, efficient welfare distribution system. Check your eligibility for various government schemes today.
         </p>
@@ -231,6 +232,18 @@ const AboutPage = () => {
           >
             Login to Apply
           </Button>
+        </div>
+      </section>
+
+      {/* Government Welfare Schemes Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="bg-[#0f698a] p-8 rounded-lg">
+            <h2 className="text-3xl font-bold mb-6 text-white">Government Welfare Schemes</h2>
+            <p className="text-xl text-white max-w-3xl">
+              Explore various welfare schemes offered by the government and check your eligibility. Apply online through our secure platform.
+            </p>
+          </div>
         </div>
       </section>
     </div>

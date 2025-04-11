@@ -51,7 +51,7 @@ const statusConfig = {
   },
   payment_pending: {
     label: "Payment Pending",
-    color: "bg-blue-100 text-blue-800",
+    color: "bg-[#0f698a]/10 text-[#0f698a]",
     icon: IndianRupee,
   },
   completed: {
@@ -127,7 +127,7 @@ export const ApplicationTracker = ({ applications, isLoading = false }: Applicat
 
     return (
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-blue-600">
+        <div className="flex items-center gap-2 text-[#0f698a]">
           <IndianRupee className="h-4 w-4" />
           <span>Payment Initiated</span>
         </div>

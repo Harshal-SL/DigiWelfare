@@ -35,7 +35,7 @@ export const AcknowledgmentPage = () => {
   const handleDownloadAcknowledgment = () => {
     // Create acknowledgment content
     const acknowledgmentContent = `
-      AID LEDGER - APPLICATION ACKNOWLEDGMENT
+      DIGIWELFARE - APPLICATION ACKNOWLEDGMENT
       --------------------------------------
       
       Application ID: ${applicationData.id}
@@ -50,7 +50,7 @@ export const AcknowledgmentPage = () => {
       and the payment has been processed. Your application will now be reviewed
       by our team.
       
-      Thank you for using AID Ledger.
+      Thank you for using DigiWelfare.
     `;
 
     // Create blob and download
@@ -124,7 +124,7 @@ export const AcknowledgmentPage = () => {
             </Button>
             <Button
               onClick={handleDownloadAcknowledgment}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-[#0f698a] hover:bg-[#0f698a]/90"
             >
               <Download className="mr-2 h-4 w-4" />
               Download Acknowledgment

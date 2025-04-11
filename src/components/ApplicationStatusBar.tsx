@@ -33,7 +33,7 @@ export const ApplicationStatusBar = ({ currentStep }: ApplicationStatusBarProps)
         {/* Progress line */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gray-200">
           <div
-            className="h-full bg-blue-600 transition-all duration-500"
+            className="h-full bg-[#0f698a] transition-all duration-500"
             style={{
               width: currentStep === 'application' ? '0%' :
                      currentStep === 'payment' ? '50%' : '100%'
@@ -51,9 +51,9 @@ export const ApplicationStatusBar = ({ currentStep }: ApplicationStatusBarProps)
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   isCompleted
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-[#0f698a] text-white'
                     : isCurrent
-                    ? 'bg-blue-100 text-blue-600 border-2 border-blue-600'
+                    ? 'bg-[#0f698a] text-white border-2 border-white'
                     : 'bg-gray-100 text-gray-400'
                 }`}
               >
@@ -68,9 +68,9 @@ export const ApplicationStatusBar = ({ currentStep }: ApplicationStatusBarProps)
               <span
                 className={`mt-2 text-sm font-medium ${
                   isCompleted
-                    ? 'text-blue-600'
+                    ? 'text-[#0f698a]'
                     : isCurrent
-                    ? 'text-blue-600'
+                    ? 'text-[#0f698a]'
                     : 'text-gray-400'
                 }`}
               >

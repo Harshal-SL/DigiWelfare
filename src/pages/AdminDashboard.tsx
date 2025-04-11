@@ -29,6 +29,14 @@ import {
 } from "../components/ui/card";
 import { CreateSchemeForm } from "../components/CreateSchemeForm";
 import { logToBlockchain } from '../utils/blockchainLogger';
+import chatBotLogo from '../assets/chat-bot.svg';
+
+// Add custom toast styles
+const customToast = {
+  style: {
+    color: '#0f698a',
+  },
+};
 
 const AdminDashboard = () => {
   const { user, isLoggedIn } = useAuth();
@@ -104,11 +112,11 @@ const AdminDashboard = () => {
         )
       );
       
-      toast.success("Application approved successfully");
+      toast.success("Application approved successfully", customToast);
       setShowApplicationDetails(false);
     } catch (error) {
       console.error("Error approving application:", error);
-      toast.error("Failed to approve application");
+      toast.error("Failed to approve application", customToast);
     } finally {
       setIsProcessing(false);
     }
@@ -140,13 +148,13 @@ const AdminDashboard = () => {
         )
       );
       
-      toast.success("Application rejected successfully!");
+      toast.success("Application rejected successfully!", customToast);
       setIsRejectDialogOpen(false);
       setRejectionComment("");
       setSelectedApplication(null);
     } catch (error) {
       console.error("Error rejecting application:", error);
-      toast.error("Failed to reject application. Please try again.");
+      toast.error("Failed to reject application. Please try again.", customToast);
     }
   };
 
@@ -182,10 +190,10 @@ const AdminDashboard = () => {
       };
 
       setLocalSchemes(prev => [...prev, newScheme]);
-      toast.success("Scheme created successfully!");
+      toast.success("Scheme created successfully!", customToast);
     } catch (error) {
       console.error("Error creating scheme:", error);
-      toast.error("Failed to create scheme. Please try again.");
+      toast.error("Failed to create scheme. Please try again.", customToast);
     }
   };
 
@@ -196,7 +204,10 @@ const AdminDashboard = () => {
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center gap-2">
+          <img src={chatBotLogo} alt="Welfare Logo" className="h-8 w-8" />
+          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        </div>
         <Button onClick={() => setShowCreateScheme(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Add New Scheme
@@ -205,8 +216,18 @@ const AdminDashboard = () => {
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-4">
         <TabsList>
-          <TabsTrigger value="applicants">Applicants</TabsTrigger>
-          <TabsTrigger value="schemes">Schemes</TabsTrigger>
+          <TabsTrigger 
+            value="applicants"
+            className="data-[state=active]:bg-[#0f698a] data-[state=active]:text-white bg-white text-[#0f698a] border border-[#0f698a]"
+          >
+            Applicants
+          </TabsTrigger>
+          <TabsTrigger 
+            value="schemes"
+            className="data-[state=active]:bg-[#0f698a] data-[state=active]:text-white bg-white text-[#0f698a] border border-[#0f698a]"
+          >
+            Schemes
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="applicants">

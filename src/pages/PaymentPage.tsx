@@ -225,15 +225,15 @@ export const PaymentPage = () => {
 
             <Tabs defaultValue="card" className="w-full">
               <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="card" onClick={() => setSelectedPaymentMethod('card')}>
+                <TabsTrigger value="card" onClick={() => setSelectedPaymentMethod('card')} className="data-[state=active]:bg-[#0f698a] data-[state=active]:text-white bg-white border border-[#0f698a] text-[#0f698a]">
                   <CreditCard className="h-4 w-4 mr-2" />
                   Card
                 </TabsTrigger>
-                <TabsTrigger value="upi" onClick={() => setSelectedPaymentMethod('upi')}>
+                <TabsTrigger value="upi" onClick={() => setSelectedPaymentMethod('upi')} className="data-[state=active]:bg-[#0f698a] data-[state=active]:text-white bg-white border border-[#0f698a] text-[#0f698a]">
                   <Smartphone className="h-4 w-4 mr-2" />
                   UPI
                 </TabsTrigger>
-                <TabsTrigger value="netbanking" onClick={() => setSelectedPaymentMethod('netbanking')}>
+                <TabsTrigger value="netbanking" onClick={() => setSelectedPaymentMethod('netbanking')} className="data-[state=active]:bg-[#0f698a] data-[state=active]:text-white bg-white border border-[#0f698a] text-[#0f698a]">
                   <Banknote className="h-4 w-4 mr-2" />
                   Net Banking
                 </TabsTrigger>
@@ -352,7 +352,7 @@ export const PaymentPage = () => {
             <Button
               onClick={handlePayment}
               disabled={loading || paymentStatus === 'completed'}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-[#0f698a] hover:bg-[#0f698a]/90"
             >
               {loading ? (
                 <>

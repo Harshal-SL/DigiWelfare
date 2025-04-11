@@ -231,7 +231,7 @@ const SchemeCard = ({
             </div>
           ))}
           {scheme.eligibility.length > 2 && (
-            <div className="text-xs text-blue-700 bg-blue-50 px-2 py-1 rounded-full">
+            <div className="text-xs text-[#0f698a] bg-[#0f698a]/10 px-2 py-1 rounded-full">
               +{scheme.eligibility.length - 2} more
             </div>
           )}

@@ -28,6 +28,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "../components/ui/textarea";
 import { logToBlockchain } from "../utils/blockchainLogger";
 
+// Add custom toast styles
+const customToast = {
+  style: {
+    color: '#0f698a',
+  },
+};
+
 interface Applicant {
   id: string;
   userId: string;
@@ -65,13 +72,13 @@ export const AdminApplicantsList = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Badge variant="secondary">Pending</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>;
       case 'approved':
-        return <Badge variant="success">Approved</Badge>;
+        return <Badge className="bg-green-100 text-green-800">Approved</Badge>;
       case 'rejected':
-        return <Badge variant="destructive">Rejected</Badge>;
+        return <Badge className="bg-red-100 text-red-800">Rejected</Badge>;
       default:
-        return <Badge variant="outline">Unknown</Badge>;
+        return <Badge className="bg-gray-100 text-gray-800">Unknown</Badge>;
     }
   };
 
@@ -123,7 +130,7 @@ export const AdminApplicantsList = () => {
         }))
       );
       
-      toast.success("Payment initiated successfully!");
+      toast.success("Payment initiated successfully!", customToast);
       console.log('Payment Transaction Details:', {
         transactionHash: blockchainLog.transactionHash,
         timestamp: blockchainLog.timestamp,
@@ -135,7 +142,7 @@ export const AdminApplicantsList = () => {
       });
     } catch (error) {
       console.error('Error initiating payment:', error);
-      toast.error("Failed to initiate payment. Please try again.");
+      toast.error("Failed to initiate payment. Please try again.", customToast);
     } finally {
       setProcessingPayment(null);
     }
@@ -157,10 +164,10 @@ export const AdminApplicantsList = () => {
         }))
       );
       
-      toast.success("Application approved successfully!");
+      toast.success("Application approved successfully!", customToast);
     } catch (error) {
       console.error('Error approving application:', error);
-      toast.error("Failed to approve application. Please try again.");
+      toast.error("Failed to approve application. Please try again.", customToast);
     }
   };
 
@@ -187,13 +194,13 @@ export const AdminApplicantsList = () => {
         }))
       );
       
-      toast.success("Application rejected successfully!");
+      toast.success("Application rejected successfully!", customToast);
       setIsRejectDialogOpen(false);
       setRejectionComment('');
       setSelectedApplicant(null);
     } catch (error) {
       console.error('Error rejecting application:', error);
-      toast.error("Failed to reject application. Please try again.");
+      toast.error("Failed to reject application. Please try again.", customToast);
     }
   };
 
@@ -508,7 +515,11 @@ export const AdminApplicantsList = () => {
                   <TableCell>{applicant.name}</TableCell>
                   <TableCell>{applicant.email}</TableCell>
                   <TableCell>
-                    <Badge variant={applicant.eligibilityScore && applicant.eligibilityScore >= 70 ? "success" : "warning"}>
+                    <Badge
+                      className={
+                        applicant.eligibilityScore && applicant.eligibilityScore >= 70 ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
+                      }
+                    >
                       {applicant.eligibilityScore}%
                     </Badge>
                   </TableCell>
@@ -516,7 +527,7 @@ export const AdminApplicantsList = () => {
                   {selectedStatus === 'approved' && (
                     <TableCell>
                       {applicant.paymentStatus === 'completed' ? (
-                        <Badge variant="success">Completed</Badge>
+                        <Badge className="bg-green-100 text-green-800">Completed</Badge>
                       ) : (
                         <Button
                           variant="outline"

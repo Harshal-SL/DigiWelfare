@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn, Menu, X, UserPlus, User } from "lucide-react";
@@ -26,7 +25,7 @@ export const Navbar = () => {
                 <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="font-bold text-xl text-welfare-700">AidLedger</span>
+            <span className="font-bold text-xl text-welfare-700">DigiWelfare</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -56,7 +55,7 @@ export const Navbar = () => {
                   <User size={16} />
                   Profile
                 </Button>
-                <Button onClick={logout} variant="outline">Logout</Button>
+                <Button onClick={logout} variant="outline" className="border-[#0f698a] text-[#0f698a] hover:bg-[#0f698a]/10">Logout</Button>
               </div>
             ) : (
               <div className="flex items-center gap-3">
@@ -116,7 +115,7 @@ export const Navbar = () => {
                   <User size={16} className="mr-2" />
                   Profile
                 </Button>
-                <Button onClick={() => {logout(); setIsMenuOpen(false);}} variant="outline">Logout</Button>
+                <Button onClick={() => {logout(); setIsMenuOpen(false);}} variant="outline" className="border-[#0f698a] text-[#0f698a] hover:bg-[#0f698a]/10">Logout</Button>
               </>
             ) : (
               <>

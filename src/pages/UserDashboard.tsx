@@ -14,6 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { schemes, applications } from "@/data/mockData";
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 import { Badge } from "../components/ui/badge";
+import { Label } from "../components/ui/label";
 
 const UserDashboard = () => {
   const { user, isLoggedIn } = useAuth();
@@ -78,9 +79,6 @@ const UserDashboard = () => {
 
         <div className="text-sm text-gray-600">
           <p>Required Documents: {application.documents.join(", ")}</p>
-          {application.additionalInfo && (
-            <p className="mt-2">Additional Information: {application.additionalInfo}</p>
-          )}
         </div>
 
         {application.status === "rejected" && (
@@ -104,9 +102,9 @@ const UserDashboard = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Hello, {user?.name}</h1>
-        <p className="text-gray-600 mt-2">Welcome to your AidLedger dashboard.</p>
+      <div className="mb-8 bg-[#0f698a] p-6 rounded-lg">
+        <h1 className="text-3xl font-bold text-white">Hello, {user?.name}</h1>
+        <p className="text-white mt-2">Welcome to your DigiWelfare dashboard.</p>
       </div>
 
       {/* Dashboard summary cards */}
@@ -157,9 +155,9 @@ const UserDashboard = () => {
         
         <TabsContent value="schemes">
           <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b">
+            <div className="p-6 border-b bg-[#0f698a] text-white">
               <h2 className="text-xl font-semibold">Schemes Available for Application</h2>
-              <p className="text-gray-600 mt-1">These are the welfare schemes you are eligible to apply for.</p>
+              <p className="text-white mt-1">These are the welfare schemes you are eligible to apply for.</p>
             </div>
             
             <div className="p-6">
@@ -214,9 +212,9 @@ const UserDashboard = () => {
         
         <TabsContent value="applications">
           <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b">
+            <div className="p-6 border-b bg-[#0f698a] text-white">
               <h2 className="text-xl font-semibold">My Applications</h2>
-              <p className="text-gray-600 mt-1">Track the status of your scheme applications.</p>
+              <p className="text-white mt-1">Track the status of your scheme applications.</p>
             </div>
             
             <div className="p-6">

@@ -14,9 +14,9 @@ interface Message {
 const LoadingDots = () => {
   return (
     <div className="flex space-x-1">
-      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+      <div className="w-2 h-2 bg-[#0f698a] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+      <div className="w-2 h-2 bg-[#0f698a] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+      <div className="w-2 h-2 bg-[#0f698a] rounded-full animate-bounce"></div>
     </div>
   );
 };
@@ -162,17 +162,17 @@ const ChatBot = () => {
         <Button
           variant="outline"
           size="icon"
-          className="rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 bg-blue-500 hover:bg-blue-600 group border-0"
+          className="rounded-full w-12 h-12 shadow-lg hover:shadow-xl transition-all duration-300 bg-[#0f698a] hover:bg-[#0a3f56] group border-0"
           onClick={() => setIsOpen(true)}
         >
-          <div className="absolute -top-8 right-0 bg-blue-500 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+          <div className="absolute -top-8 right-0 bg-[#0f698a] text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
             Ask DigiMitra
           </div>
           <MessageSquare className="h-5 w-5 text-white" />
         </Button>
       ) : (
         <Card className="w-[350px] shadow-xl border-0">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gradient-to-r from-[#0f698a] to-[#0a3f56] text-white rounded-t-lg">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 rounded-full bg-white/10 p-1.5 flex items-center justify-center">
                 <Bot className="h-5 w-5 text-white" />
@@ -209,7 +209,7 @@ const ChatBot = () => {
                         className={cn(
                           "max-w-[80%] rounded-lg p-3",
                           message.role === "user"
-                            ? "bg-blue-500 text-white"
+                            ? "bg-[#0f698a] text-white"
                             : "bg-gray-100 text-gray-900"
                         )}
                       >
@@ -231,12 +231,12 @@ const ChatBot = () => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask DigiMitra..."
-                  className="flex-1 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                  className="flex-1 border-gray-200 focus:border-[#0f698a] focus:ring-[#0f698a]"
                 />
                 <Button 
                   type="submit" 
                   disabled={isLoading}
-                  className="bg-blue-500 hover:bg-blue-600"
+                  className="bg-[#0f698a] hover:bg-[#0a3f56]"
                 >
                   {isLoading ? (
                     <LoadingDots />

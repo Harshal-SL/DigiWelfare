@@ -74,7 +74,7 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
     <div className="max-w-2xl mx-auto p-4">
       <div ref={receiptRef}>
         <Card className="shadow-lg" id="acknowledgment-receipt">
-          <CardHeader className="text-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
+          <CardHeader className="text-center bg-gradient-to-r from-[#0f698a] to-[#0f698a] text-white rounded-t-lg">
             <CardTitle className="text-2xl font-bold">Application Acknowledgment</CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
@@ -86,7 +86,7 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="space-y-2">
                 <p className="font-semibold">Application Number:</p>
-                <p className="text-blue-600 font-mono">{applicationData.applicationNumber}</p>
+                <p className="text-[#0f698a] font-mono">{applicationData.applicationNumber}</p>
               </div>
               <div className="space-y-2">
                 <p className="font-semibold">Date of Submission:</p>
@@ -109,7 +109,7 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="font-semibold">Transaction ID:</p>
-                      <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded break-all">
+                      <p className="text-[#0f698a] font-mono bg-gray-100 p-2 rounded break-all">
                         {applicationData.transactionId}
                       </p>
                     </div>
@@ -130,7 +130,7 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
                     {applicationData.applicationBlockchainHash && (
                       <div>
                         <p className="font-semibold">Application Blockchain Hash:</p>
-                        <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded text-xs break-all">
+                        <p className="text-[#0f698a] font-mono bg-gray-100 p-2 rounded text-xs break-all">
                           {applicationData.applicationBlockchainHash}
                         </p>
                       </div>
@@ -138,7 +138,7 @@ const AcknowledgmentReceipt: React.FC<AcknowledgmentReceiptProps> = ({ applicati
                     {applicationData.paymentBlockchainHash && (
                       <div>
                         <p className="font-semibold">Payment Blockchain Hash:</p>
-                        <p className="text-blue-600 font-mono bg-gray-100 p-2 rounded text-xs break-all">
+                        <p className="text-[#0f698a] font-mono bg-gray-100 p-2 rounded text-xs break-all">
                           {applicationData.paymentBlockchainHash}
                         </p>
                       </div>

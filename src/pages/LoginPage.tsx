@@ -156,12 +156,22 @@ const LoginPage = () => {
             </svg>
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-center mb-6">Log in to AidLedger</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Log in to DigiWelfare</h2>
         
         <Tabs defaultValue="user" className="w-full">
-          <TabsList className="grid grid-cols-2 mb-6">
-            <TabsTrigger value="user">User Login</TabsTrigger>
-            <TabsTrigger value="admin">Admin Login</TabsTrigger>
+          <TabsList className="grid grid-cols-2 mb-6 bg-[#0f698a]">
+            <TabsTrigger 
+              value="user" 
+              className="text-white data-[state=active]:bg-white data-[state=active]:text-[#0f698a] data-[state=active]:font-semibold"
+            >
+              User Login
+            </TabsTrigger>
+            <TabsTrigger 
+              value="admin" 
+              className="text-white data-[state=active]:bg-white data-[state=active]:text-[#0f698a] data-[state=active]:font-semibold"
+            >
+              Admin Login
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="user">
@@ -205,7 +215,11 @@ const LoginPage = () => {
                   </div>
                 </div>
                 <div className="pt-2">
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-[#0f698a] hover:bg-[#0a3f56] text-white" 
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -277,7 +291,11 @@ const LoginPage = () => {
                   </div>
                 </div>
                 <div className="pt-2">
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-[#0f698a] hover:bg-[#0a3f56] text-white" 
+                    disabled={isLoading}
+                  >
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

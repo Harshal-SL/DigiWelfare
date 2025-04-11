@@ -1,52 +1,80 @@
-
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Lock, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle, Lock, Shield, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { schemes } from "@/data/mockData";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const carouselImages = [
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=800&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=800&auto=format&fit=crop"
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="gradient-bg text-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="md:w-1/2">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Transparent & Efficient Social Welfare Distribution
-              </h1>
-              <p className="text-lg md:text-xl mb-8">
-                AidLedger uses AI and blockchain technology to ensure that social welfare benefits reach the right people at the right time, with complete transparency and security.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="lg" 
-                  className="bg-white text-welfare-700 hover:bg-gray-100"
-                  onClick={() => navigate(isLoggedIn ? "/dashboard" : "/login")}
-                >
-                  {isLoggedIn ? "Go to Dashboard" : "Login to Apply"}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-white text-white hover:bg-welfare-600"
-                  onClick={() => navigate("/schemes")}
-                >
-                  View All Schemes
-                </Button>
-              </div>
-            </div>
-            <div className="md:w-1/2">
-              <img 
-                src="https://images.unsplash.com/photo-1604076913837-52ab5629fba9?q=80&w=800&auto=format&fit=crop" 
-                alt="People receiving benefits" 
-                className="rounded-lg shadow-xl max-w-full h-auto"
+      {/* Hero Section with Carousel */}
+      <section className="relative h-[600px] overflow-hidden">
+        {/* Carousel Images */}
+        <div className="absolute inset-0">
+          {carouselImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={image}
+                alt={`Slide ${index + 1}`}
+                className="w-full h-full object-cover"
               />
+            </div>
+          ))}
+        </div>
+
+        {/* Semi-transparent overlay */}
+        <div className="absolute inset-0 bg-black/50" />
+
+        {/* Content */}
+        <div className="relative container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-2xl text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Transparent & Efficient Social Welfare Distribution
+            </h1>
+            <p className="text-lg md:text-xl mb-8">
+              DigiWelfare: An Aadhaar-integrated welfare platform leveraging AI & Blockchain for secure, transparent, and efficient scheme distribution.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="bg-white text-welfare-700 hover:bg-gray-100"
+                onClick={() => navigate(isLoggedIn ? "/dashboard" : "/login")}
+              >
+                {isLoggedIn ? "Go to Dashboard" : "Login to Apply"}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white text-[#0f698a] hover:bg-transparent"
+                onClick={() => navigate("/schemes")}
+              >
+                View All Schemes
+              </Button>
             </div>
           </div>
         </div>
@@ -55,31 +83,39 @@ const HomePage = () => {
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How AidLedger Works</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">How DigiWelfare Works</h2>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <div className="flex justify-center mb-4">
                 <Shield className="h-12 w-12 text-welfare-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">Secure Authentication</h3>
+              <h3 className="text-xl font-semibold mb-3">Secure Authentication</h3>
               <p className="text-gray-600">Log in securely using your Aadhaar via DigiLocker integration, ensuring your identity is protected.</p>
             </div>
             
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <div className="flex justify-center mb-4">
                 <CheckCircle className="h-12 w-12 text-welfare-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">AI-Powered Eligibility</h3>
+              <h3 className="text-xl font-semibold mb-3">AI-Powered Eligibility</h3>
               <p className="text-gray-600">Our AI system automatically checks your eligibility for various welfare schemes, making recommendations based on your profile.</p>
             </div>
             
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
               <div className="flex justify-center mb-4">
                 <Lock className="h-12 w-12 text-welfare-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">Blockchain Verification</h3>
+              <h3 className="text-xl font-semibold mb-3">Blockchain Verification</h3>
               <p className="text-gray-600">All disbursements are recorded on a blockchain ledger, ensuring complete transparency and preventing fraud.</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+              <div className="flex justify-center mb-4">
+                <User className="h-12 w-12 text-welfare-500" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Build Your Profile</h3>
+              <p className="text-gray-600">Create and manage your digital profile with verified documents, making it easier to apply for multiple schemes.</p>
             </div>
           </div>
         </div>

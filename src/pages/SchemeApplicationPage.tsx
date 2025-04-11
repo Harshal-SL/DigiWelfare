@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, ArrowLeft, FileText, Upload } from "lucide-react";
+import { Loader2, ArrowLeft, FileText, Upload, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { schemes, applications } from "@/data/mockData";
 import OTPVerification from "@/components/OTPVerification";
@@ -178,13 +178,17 @@ const SchemeApplicationPage = () => {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
+      <div className="mb-8 bg-[#0f698a] p-6 rounded-lg">
+        <h1 className="text-3xl font-bold text-white">Apply for {scheme?.title}</h1>
+        <p className="text-white mt-2">Complete the application form to apply for this welfare scheme.</p>
+      </div>
       <div className="max-w-2xl mx-auto">
         {/* Add status bar at the top */}
         <ApplicationStatusBar currentStep="application" />
         
         <Card className="shadow-2xl hover:shadow-3xl transition-all duration-300 border-0">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
+          <CardHeader className="bg-gradient-to-r from-[#0f698a] to-[#0f698a] text-white rounded-t-lg">
             <div className="flex items-center gap-3 mb-3">
               {!showAcknowledgment && (
                 <Button
@@ -216,16 +220,16 @@ const SchemeApplicationPage = () => {
                 {/* Progress Indicator */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmailVerified && isPhoneVerified ? 'bg-green-500' : 'bg-blue-500'} text-white`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isEmailVerified && isPhoneVerified ? 'bg-[#0f698a]' : 'bg-[#0f698a]'} text-white`}>
                       1
                     </div>
                     <span className="text-sm font-medium">Contact Verification</span>
                   </div>
                   <div className="flex-1 h-1 bg-gray-200 mx-4">
-                    <div className={`h-full ${isEmailVerified && isPhoneVerified ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`} style={{ width: isEmailVerified && isPhoneVerified ? '100%' : '50%' }}></div>
+                    <div className={`h-full ${isEmailVerified && isPhoneVerified ? 'bg-[#0f698a]' : 'bg-[#0f698a]'} transition-all duration-500`} style={{ width: isEmailVerified && isPhoneVerified ? '100%' : '50%' }}></div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${documents.length > 0 ? 'bg-green-500' : 'bg-blue-500'} text-white`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${documents.length > 0 ? 'bg-[#0f698a]' : 'bg-[#0f698a]'} text-white`}>
                       2
                     </div>
                     <span className="text-sm font-medium">Documents</span>
@@ -235,7 +239,7 @@ const SchemeApplicationPage = () => {
                 {/* Basic Information */}
                 <div className="space-y-6 bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
                   <h3 className="font-semibold text-xl text-gray-800 flex items-center gap-3">
-                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                    <span className="w-3 h-3 bg-[#0f698a] rounded-full"></span>
                     Basic Information
                   </h3>
                   <div className="grid gap-8 md:grid-cols-2">
@@ -245,7 +249,7 @@ const SchemeApplicationPage = () => {
                         id="name"
                         value={user?.name || ""}
                         disabled
-                        className="bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        className="bg-gray-50 border-gray-200 focus:border-[#0f698a] focus:ring-1 focus:ring-[#0f698a]"
                       />
                     </div>
                     <div className="space-y-3">
@@ -259,14 +263,14 @@ const SchemeApplicationPage = () => {
                           placeholder="Enter your email"
                           required
                           disabled={isEmailVerified}
-                          className="bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                          className="bg-gray-50 border-gray-200 focus:border-[#0f698a] focus:ring-1 focus:ring-[#0f698a]"
                         />
                         {!isEmailVerified && (
                           <Button
                             type="button"
                             variant="outline"
                             onClick={() => setShowEmailOTP(true)}
-                            className="hover:bg-blue-50 border-blue-200 text-blue-600"
+                            className="hover:bg-[#0f698a]/10 border-[#0f698a] text-[#0f698a]"
                           >
                             Verify
                           </Button>
@@ -290,7 +294,7 @@ const SchemeApplicationPage = () => {
                           placeholder="Enter your phone number"
                           required
                           disabled={isPhoneVerified}
-                          className="bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                          className="bg-gray-50 border-gray-200 focus:border-[#0f698a] focus:ring-1 focus:ring-[#0f698a]"
                         />
                         {!isPhoneVerified && (
                           <Button
@@ -303,7 +307,7 @@ const SchemeApplicationPage = () => {
                               }
                               setShowPhoneOTP(true);
                             }}
-                            className="hover:bg-blue-50 border-blue-200 text-blue-600"
+                            className="hover:bg-[#0f698a]/10 border-[#0f698a] text-[#0f698a]"
                           >
                             Verify
                           </Button>
@@ -320,113 +324,43 @@ const SchemeApplicationPage = () => {
                 </div>
 
                 {/* Required Documents */}
-                <div className="space-y-6 bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                  <h3 className="font-semibold text-xl text-gray-800 flex items-center gap-3">
-                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-                    Required Documents
-                  </h3>
-                  <div className="grid gap-6 md:grid-cols-2">
-                    {scheme.documents.map((doc, index) => (
-                      <div key={index} className="space-y-3 p-6 rounded-lg border border-gray-200 hover:border-blue-200 transition-colors duration-200 bg-gray-50">
-                        <div className="flex items-center justify-between">
-                          <Label className="text-gray-700 font-medium">{doc}</Label>
-                          <span className={`text-sm px-3 py-1 rounded-full ${
-                            documents.find(d => d.name.toLowerCase().includes(doc.toLowerCase())) 
-                              ? "bg-green-50 text-green-600" 
-                              : "bg-gray-100 text-gray-500"
-                          }`}>
-                            {documents.find(d => d.name.toLowerCase().includes(doc.toLowerCase())) 
-                              ? "✓ Uploaded" 
-                              : "Not uploaded"}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Input
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="documents">Required Documents</Label>
+                    <div className="mt-2 space-y-2">
+                      {scheme?.documents.map((doc, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <input
                             type="file"
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            onChange={(e) => {
-                              if (e.target.files && e.target.files[0]) {
-                                const file = e.target.files[0];
-                                const existingIndex = documents.findIndex(
-                                  d => d.name.toLowerCase().includes(doc.toLowerCase())
-                                );
-                                if (existingIndex >= 0) {
-                                  const newDocuments = [...documents];
-                                  newDocuments[existingIndex] = file;
-                                  setDocuments(newDocuments);
-                                } else {
-                                  setDocuments([...documents, file]);
-                                }
-                                toast.success(`${doc} uploaded successfully`);
-                              }
-                            }}
-                            className="cursor-pointer bg-white border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                            id={`document-${index}`}
+                            className="hidden"
+                            onChange={(e) => handleFileChange(e)}
                           />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => {
-                              const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-                              if (fileInput) fileInput.click();
-                            }}
-                            className="hover:bg-blue-50 border-blue-200 text-blue-600"
+                          <label
+                            htmlFor={`document-${index}`}
+                            className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-gray-50"
                           >
-                            <Upload className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        {documents.find(d => d.name.toLowerCase().includes(doc.toLowerCase())) && (
-                          <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-3 rounded-md">
-                            <FileText className="h-4 w-4" />
-                            <span className="truncate">
-                              {documents.find(d => d.name.toLowerCase().includes(doc.toLowerCase()))?.name}
+                            {doc}
+                          </label>
+                          {documents.find(d => d.name.toLowerCase().includes(doc.toLowerCase())) && (
+                            <span className="text-green-500">
+                              <CheckCircle2 className="h-5 w-5" />
                             </span>
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="mt-4">
-                    <p className="text-sm text-gray-500">
-                      Accepted file formats: PDF, JPG, JPEG, PNG
-                    </p>
+
+                  <div className="flex justify-end">
+                    <Button 
+                      type="submit" 
+                      className="bg-[#0f698a] hover:bg-[#0a3f56] text-white"
+                    >
+                      Submit Application
+                    </Button>
                   </div>
                 </div>
-
-                {/* Additional Information */}
-                <div className="space-y-6 bg-white p-8 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                  <h3 className="font-semibold text-xl text-gray-800 flex items-center gap-3">
-                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
-                    Additional Information
-                  </h3>
-                  <div className="space-y-3">
-                    <Label htmlFor="additionalInfo" className="text-gray-700 font-medium">Additional Details (Optional)</Label>
-                    <Textarea
-                      id="additionalInfo"
-                      value={additionalInfo}
-                      onChange={(e) => setAdditionalInfo(e.target.value)}
-                      placeholder="Add any additional information that might help with your application..."
-                      rows={4}
-                      className="bg-gray-50 border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    "Submit Application"
-                  )}
-                </Button>
               </form>
             )}
           </CardContent>

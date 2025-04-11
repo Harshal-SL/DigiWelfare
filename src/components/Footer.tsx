@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
@@ -15,10 +14,10 @@ export const Footer = () => {
                   <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <span className="font-bold text-xl">AidLedger</span>
+              <span className="font-bold text-xl">DigiWelfare</span>
             </div>
             <p className="text-gray-300 mb-4">Transparent & Efficient Social Welfare Distribution Using AI & Blockchain</p>
-            <p className="text-gray-300">© {new Date().getFullYear()} AidLedger. All rights reserved.</p>
+            <p className="text-gray-300">© {new Date().getFullYear()} DigiWelfare. All rights reserved.</p>
           </div>
           
           <div>
@@ -33,7 +32,7 @@ export const Footer = () => {
           
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
-            <p className="text-gray-300 mb-2">Email: contact@aidledger.gov</p>
+            <p className="text-gray-300 mb-2">Email: contact@digiwelfare.gov</p>
             <p className="text-gray-300 mb-2">Phone: +91-1234567890</p>
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-white hover:text-welfare-400 transition">

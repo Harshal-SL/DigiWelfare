@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -310,7 +309,7 @@ const ProfileUpdatePage = () => {
           </DialogHeader>
           
           <div className="bg-welfare-50 rounded-md p-3 text-sm">
-            <p>This process requires access to your DigiLocker account, which is already linked to your AidLedger profile.</p>
+            <p>This process requires access to your DigiLocker account, which is already linked to your DigiWelfare profile.</p>
           </div>
           
           {isFetchingDoc ? (

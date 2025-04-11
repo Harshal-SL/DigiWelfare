@@ -40,7 +40,7 @@ const statusConfig = {
   },
   payment_pending: {
     label: "Payment Pending",
-    color: "bg-blue-100 text-blue-800",
+    color: "bg-[#0f698a]/10 text-[#0f698a]",
     icon: IndianRupee,
   },
   completed: {
