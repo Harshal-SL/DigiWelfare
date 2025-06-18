@@ -1,73 +1,103 @@
-# Welcome to your Lovable project
+# DigiWelfare: Secure, Transparent Social Welfare Platform
 
-## Project info
+DigiWelfare is a next-generation, Aadhaar-integrated platform for the secure, transparent, and efficient distribution of government welfare schemes. Leveraging AI for eligibility checks and blockchain for disbursement verification, DigiWelfare ensures that social benefits reach the right people with maximum transparency and minimum friction.
 
-**URL**: https://lovable.dev/projects/219727ca-85b9-49c4-98dc-c343b89e47c8
+## Table of Contents
 
-## How can I edit this code?
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Available Scripts](#available-scripts)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
+- [Custom Domain](#custom-domain)
+- [License](#license)
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Aadhaar-based Secure Authentication:** Login via DigiLocker for robust identity verification.
+- **AI-Powered Eligibility:** Automated eligibility checks and scheme recommendations based on user profile.
+- **Blockchain Verification:** All disbursements are recorded on a blockchain ledger for transparency and fraud prevention.
+- **User Dashboard:** Track applications, view eligible schemes, and manage your digital profile.
+- **Admin Dashboard:** Manage schemes, review and approve/reject applications, and monitor platform activity.
+- **Scheme Discovery:** Search, filter, and explore a wide range of government welfare schemes.
+- **Application Tracking:** Real-time status updates and notifications for every application.
+- **Integrated Chatbot (DigiMitra):** Get instant help and guidance on using the platform.
+- **Modern UI:** Built with shadcn-ui and Tailwind CSS for a responsive, accessible experience.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/219727ca-85b9-49c4-98dc-c343b89e47c8) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend:** React, TypeScript, Vite
+- **UI:** shadcn-ui, Tailwind CSS
+- **State/Data:** React Query, Context API
+- **Blockchain:** Ethers.js, Web3.js (for ledger integration)
+- **AI:** Google Gemini API (for chatbot)
+- **Other:** Lucide Icons, Razorpay (for payments), date-fns, zod (validation)
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [npm](https://www.npmjs.com/) or [bun](https://bun.sh/)
 
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
+cd DigiWelfare
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Install dependencies
+npm install
+# or
+bun install
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Running the App
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```sh
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at [http://localhost:5173](http://localhost:5173) by default.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` – Start the development server with hot reload.
+- `npm run build` – Build the app for production.
+- `npm run preview` – Preview the production build locally.
+- `npm run lint` – Run ESLint for code quality checks.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+aid-ledger-secure-welfare-95/
+├── public/                # Static assets
+├── src/
+│   ├── components/        # Reusable UI components (Navbar, Footer, ChatBot, etc.)
+│   ├── contexts/          # React Contexts (Auth, etc.)
+│   ├── data/              # Mock data for schemes, applications, etc.
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility libraries
+│   ├── pages/             # Main app pages (Home, Dashboard, Schemes, Admin, etc.)
+│   ├── services/          # API and blockchain service logic
+│   ├── utils/             # Utility functions
+│   ├── App.tsx            # Main app component
+│   └── main.tsx           # Entry point
+├── package.json
+├── tailwind.config.ts
+├── vite.config.ts
+└── README.md
+```
 
-This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## License
 
-## How can I deploy this project?
+This project is licensed under the MIT License.
 
-Simply open [Lovable](https://lovable.dev/projects/219727ca-85b9-49c4-98dc-c343b89e47c8) and click on Share -> Publish.
+## Acknowledgments
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Government of India for open welfare scheme data.
+- [shadcn-ui](https://ui.shadcn.com/), [Tailwind CSS](https://tailwindcss.com/), [Vite](https://vitejs.dev/), and the open-source community.
