@@ -146,7 +146,7 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg">
         <div className="flex justify-center mb-6">
           <div className="bg-welfare-500 text-white p-3 rounded-md">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -156,7 +156,11 @@ const LoginPage = () => {
             </svg>
           </div>
         </div>
+<<<<<<< HEAD
         <h2 className="text-2xl font-bold text-center mb-6">Log in to DigiWelfare</h2>
+=======
+        <h2 className="text-2xl font-bold text-center mb-6">Log in to digiwelfare</h2>
+>>>>>>> d7647d5 (Your detailed commit message here)
         
         <Tabs defaultValue="user" className="w-full">
           <TabsList className="grid grid-cols-2 mb-6 bg-[#0f698a]">

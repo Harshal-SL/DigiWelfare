@@ -34,6 +34,7 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
+import { DigilockerSimulator } from "@/components/DigilockerSimulator";
 
 // Define the form schema
 const profileUpdateSchema = z.object({
@@ -128,6 +129,11 @@ const ProfileUpdatePage = () => {
       // Update the documents state (in a real app you'd update your backend here)
       setSelectedDocument(null);
     }, 2000);
+  };
+
+  const handleVerificationSuccess = () => {
+    // Handle verification success
+    toast.success("Verification successful!");
   };
   
   if (!isLoggedIn || !user) {
@@ -309,7 +315,14 @@ const ProfileUpdatePage = () => {
           </DialogHeader>
           
           <div className="bg-welfare-50 rounded-md p-3 text-sm">
+<<<<<<< HEAD
             <p>This process requires access to your DigiLocker account, which is already linked to your DigiWelfare profile.</p>
+=======
+            <p className="text-gray-600 mb-6">
+              Please follow the steps to re-verify your identity using DigiLocker.
+            </p>
+            <p>This process requires access to your DigiLocker account, which is already linked to your digiwelfare profile.</p>
+>>>>>>> d7647d5 (Your detailed commit message here)
           </div>
           
           {isFetchingDoc ? (
@@ -331,6 +344,10 @@ const ProfileUpdatePage = () => {
           )}
         </DialogContent>
       </Dialog>
+      
+      <div className="mt-8">
+        <DigilockerSimulator onVerificationSuccess={handleVerificationSuccess} />
+      </div>
     </div>
   );
 };

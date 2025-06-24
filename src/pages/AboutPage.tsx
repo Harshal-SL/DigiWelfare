@@ -16,12 +16,19 @@ const AboutPage = () => {
     <div className="container mx-auto py-8 px-4">
       {/* Hero Section */}
       <section className="text-center mb-16">
+<<<<<<< HEAD
         <div className="bg-[#0f698a] text-white p-8 rounded-lg">
           <h1 className="text-4xl font-bold mb-6">About DigiWelfare</h1>
           <p className="text-xl max-w-3xl mx-auto">
             Seamless Welfare Distribution. Trusted, Transparent, AI-Driven.
           </p>
         </div>
+=======
+        <h1 className="text-4xl font-bold mb-6">About digiwelfare</h1>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Leveraging AI and blockchain for a transparent, efficient, and secure social welfare system.
+        </p>
+>>>>>>> d7647d5 (Your detailed commit message here)
       </section>
 
       {/* Mission & Vision */}
@@ -90,7 +97,11 @@ const AboutPage = () => {
 
       {/* How It Works */}
       <section className="gradient-bg text-white py-16 px-4 rounded-xl mb-16">
+<<<<<<< HEAD
         <h2 className="text-3xl font-bold mb-12 text-center">How DigiWelfare Works</h2>
+=======
+        <h2 className="text-3xl font-bold mb-12 text-center">How digiwelfare Works</h2>
+>>>>>>> d7647d5 (Your detailed commit message here)
         
         <div className="max-w-4xl mx-auto">
           <div className="space-y-12">
@@ -214,9 +225,13 @@ const AboutPage = () => {
 
       {/* CTA Section */}
       <section className="bg-welfare-50 p-8 md:p-12 rounded-xl text-center">
+<<<<<<< HEAD
         <h2 className="text-2xl font-bold mb-4">Ready to Experience DigiWelfare?</h2>
+=======
+        <h2 className="text-2xl font-bold mb-4">Ready to Experience digiwelfare?</h2>
+>>>>>>> d7647d5 (Your detailed commit message here)
         <p className="text-gray-700 mb-8 max-w-2xl mx-auto">
-          Join thousands of citizens who are benefiting from a transparent, efficient welfare distribution system. Check your eligibility for various government schemes today.
+          Join us in our mission to create a fair and transparent welfare system for all. Check your eligibility for various government schemes today.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button 

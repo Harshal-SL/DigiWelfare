@@ -1,5 +1,17 @@
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { ArrowRight, CheckCircle, Lock, Shield, User } from "lucide-react";
+=======
+import {
+  ArrowRight,
+  CheckCircle,
+  Lock,
+  Shield,
+  MessageSquare,
+  FileCheck,
+  UserCheck,
+} from "lucide-react";
+>>>>>>> d7647d5 (Your detailed commit message here)
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { schemes } from "@/data/mockData";
@@ -26,6 +38,7 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+<<<<<<< HEAD
       {/* Hero Section with Carousel */}
       <section className="relative h-[600px] overflow-hidden">
         {/* Carousel Images */}
@@ -41,6 +54,43 @@ const HomePage = () => {
                 src={image}
                 alt={`Slide ${index + 1}`}
                 className="w-full h-full object-cover"
+=======
+      {/* Hero Section */}
+      <section className="bg-white text-gray-800 py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="md:w-full">
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+                Empowering Lives Through Secure Welfare
+              </h1>
+              <p className="text-lg md:text-xl text-gray-600 mb-8">
+                Experience a new era of social welfare distribution, powered by AI and Blockchain for complete transparency and security.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  className="bg-welfare-500 text-white hover:bg-welfare-600 shadow-lg transform hover:scale-105 transition-transform"
+                  onClick={() => navigate(isLoggedIn ? "/dashboard" : "/login")}
+                >
+                  {isLoggedIn ? "Go to Your Dashboard" : "Get Started"}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-welfare-500 text-welfare-500 hover:bg-welfare-50 hover:text-welfare-600"
+                  onClick={() => navigate("/schemes")}
+                >
+                  Explore Schemes
+                </Button>
+              </div>
+            </div>
+            <div className="md:w-full">
+              <img 
+                src="https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=1470&auto=format&fit=crop" 
+                alt="Community and support" 
+                className="rounded-xl shadow-2xl w-full h-auto"
+>>>>>>> d7647d5 (Your detailed commit message here)
               />
             </div>
           ))}
@@ -121,6 +171,65 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Why Choose Us Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Why Choose DigiWelfare?</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+              <MessageSquare className="h-12 w-12 text-welfare-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">AI Chatbot</h3>
+              <p className="text-gray-600">Get instant answers to your questions about schemes and application processes.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+              <FileCheck className="h-12 w-12 text-welfare-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Secure Document Verification</h3>
+              <p className="text-gray-600">Verify your documents securely with our DigiLocker integration.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+              <UserCheck className="h-12 w-12 text-welfare-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Automated Eligibility Check</h3>
+              <p className="text-gray-600">Our AI automatically checks your eligibility for various schemes.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md text-center">
+              <Lock className="h-12 w-12 text-welfare-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Transparent Transactions</h3>
+              <p className="text-gray-600">All transactions are recorded on the blockchain for full transparency.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Get Started Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">Get Started in 3 Easy Steps</h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-center h-16 w-16 bg-welfare-500 text-white rounded-full mx-auto mb-4">
+                <span className="text-2xl font-bold">1</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Create an Account</h3>
+              <p className="text-gray-600">Register on our platform using your basic details.</p>
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-center h-16 w-16 bg-welfare-500 text-white rounded-full mx-auto mb-4">
+                <span className="text-2xl font-bold">2</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Verify with DigiLocker</h3>
+              <p className="text-gray-600">Complete your profile by verifying your documents with DigiLocker.</p>
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-center h-16 w-16 bg-welfare-500 text-white rounded-full mx-auto mb-4">
+                <span className="text-2xl font-bold">3</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Apply for Schemes</h3>
+              <p className="text-gray-600">Browse and apply for schemes you are eligible for.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Schemes */}
       <section className="py-16">
         <div className="container mx-auto px-4">
@@ -136,8 +245,8 @@ const HomePage = () => {
             </Button>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {schemes.slice(0, 3).map((scheme) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {schemes.slice(0, 4).map((scheme) => (
               <div key={scheme.id} className="scheme-card">
                 <div className="relative h-48 mb-4 overflow-hidden rounded-md">
                   <img 
@@ -158,7 +267,9 @@ const HomePage = () => {
                   </div>
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{scheme.title}</h3>
-                <p className="text-gray-600 mb-4">{scheme.description}</p>
+                <p className="text-gray-600 mb-4 h-24 overflow-hidden">
+                  {scheme.description}
+                </p>
                 <Button 
                   className="w-full"
                   onClick={() => navigate(`/schemes/${scheme.id}`)}

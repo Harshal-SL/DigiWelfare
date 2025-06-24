@@ -14,10 +14,17 @@ export const Footer = () => {
                   <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
+<<<<<<< HEAD
               <span className="font-bold text-xl">DigiWelfare</span>
             </div>
             <p className="text-gray-300 mb-4">Transparent & Efficient Social Welfare Distribution Using AI & Blockchain</p>
             <p className="text-gray-300">© {new Date().getFullYear()} DigiWelfare. All rights reserved.</p>
+=======
+              <span className="font-bold text-xl">digiwelfare</span>
+            </div>
+            <p className="text-gray-300 mb-4">Revolutionizing social welfare with transparency and efficiency.</p>
+            <p className="text-gray-300">© {new Date().getFullYear()} digiwelfare. All rights reserved.</p>
+>>>>>>> d7647d5 (Your detailed commit message here)
           </div>
           
           <div>
@@ -31,9 +38,16 @@ export const Footer = () => {
           </div>
           
           <div>
+<<<<<<< HEAD
             <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
             <p className="text-gray-300 mb-2">Email: contact@digiwelfare.gov</p>
             <p className="text-gray-300 mb-2">Phone: +91-1234567890</p>
+=======
+            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+            <p className="text-gray-300">123 Welfare Street, New Delhi, 110001</p>
+            <p className="text-gray-300 mb-2">Email: contact@digiwelfare.gov</p>
+            <p className="text-gray-300">Phone: 1800-123-4567</p>
+>>>>>>> d7647d5 (Your detailed commit message here)
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-white hover:text-welfare-400 transition">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

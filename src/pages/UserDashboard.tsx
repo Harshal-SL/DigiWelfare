@@ -102,9 +102,15 @@ const UserDashboard = () => {
 
   return (
     <div className="container mx-auto py-8 px-4">
+<<<<<<< HEAD
       <div className="mb-8 bg-[#0f698a] p-6 rounded-lg">
         <h1 className="text-3xl font-bold text-white">Hello, {user?.name}</h1>
         <p className="text-white mt-2">Welcome to your DigiWelfare dashboard.</p>
+=======
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">Welcome, {user?.name || 'User'}!</h1>
+        <p className="text-gray-600 mt-2">Welcome to your digiwelfare dashboard.</p>
+>>>>>>> d7647d5 (Your detailed commit message here)
       </div>
 
       {/* Dashboard summary cards */}
